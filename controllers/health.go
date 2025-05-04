@@ -6,8 +6,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Receive a pointer to a Context
-// gin.Context contains all info abt request and allows to return a response
+// ControllerHealthCheck godoc
+// @Summary      Health Check
+// @Description  Returns a 200 status if the server is running correctly.
+// @Tags         Health
+// @Produce      json
+// @Success      200  {object}  map[string]string
+// @Router       /health [get]
 func ControllerHealthCheck(c *gin.Context) {
 	// IndentedJSON serializes the given struct as pretty JSON (indented + endlines) into the response body.
 	// Includes de status onf http and the struct

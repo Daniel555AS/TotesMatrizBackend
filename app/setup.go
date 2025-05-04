@@ -12,13 +12,35 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"     // swagger embed files
+	ginSwagger "github.com/swaggo/gin-swagger" // swagger handler
 	"gorm.io/gorm"
+
+	_ "totesbackend/docs" // importante para registrar los docs generados
 )
 
 var db *gorm.DB
 var router *gin.Engine
 var authUtil *utilities.AuthorizationUtil
 var logUtil *utilities.LogUtil
+
+// @schemes   https
+
+// SetupAndRunApp initializes and configures the entire application server,
+// including environment variables, database connection, middleware, route handlers,
+// CORS policies, and Swagger documentation.
+// It runs the HTTPS server on port 443 using TLS certificates.
+// If any initialization step fails, it returns an error.
+//
+// The function also performs the following steps:
+// - Loads environment variables
+// - Starts and defers closure of the PostgreSQL connection
+// - Applies database migrations
+// - Initializes repositories, services, and utilities
+// - Registers all API route groups (users, roles, auth, billing, etc.)
+// - Enables CORS with specific allowed origins
+// - Mounts the Swagger UI at /swagger/index.html
+// - Starts the HTTPS server
 
 func SetupAndRunApp() error {
 
@@ -77,6 +99,7 @@ func SetupAndRunApp() error {
 	setUpInvoice()
 	setUpExternalSaleRouter()
 	setUpSalesReportRouter()
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	err = router.RunTLS(":443", "certs/cert.pem", "certs/key.pem")
 	if err != nil {

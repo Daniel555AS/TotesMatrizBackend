@@ -1,0 +1,34 @@
+basePath: /
+host: localhost
+info:
+  contact:
+    email: support@totesbackend.com
+    name: API Support
+  description: This is a sample API documentation for the Totes backend using Gin
+    and Swagger.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: Totes Backend API
+  version: "1.0"
+paths:
+  /health:
+    get:
+      description: Returns a 200 status if the server is running correctly.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Health Check
+      tags:
+      - Health
+schemes:
+- http
+- https
+swagger: "2.0"
