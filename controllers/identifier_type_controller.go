@@ -19,6 +19,17 @@ func NewIdentifierTypeController(service *services.IdentifierTypeService, auth *
 	return &IdentifierTypeController{Service: service, Auth: auth, Log: log}
 }
 
+// GetAllIdentifierTypes godoc
+// @Summary      Get all identifier types
+// @Description  Retrieves a list of all available identifier types.
+// @Tags         identifier-types
+// @Accept       json
+// @Produce      json
+// @Success      200 {array} models.IdentifierType "Successfully retrieved identifier types"
+// @Failure      500 {object} models.ErrorResponse "Error retrieving identifier types"
+// @Failure      403 {object} models.ErrorResponse "Access denied"
+// @Security     ApiKeyAuth
+// @Router       /identifier-types [get]
 func (itc *IdentifierTypeController) GetAllIdentifierTypes(c *gin.Context) {
 	permissionId := config.PERMISSION_GET_ALL_IDENTIFIER_TYPES
 
@@ -44,6 +55,18 @@ func (itc *IdentifierTypeController) GetAllIdentifierTypes(c *gin.Context) {
 	c.JSON(http.StatusOK, identifierTypes)
 }
 
+// GetIdentifierTypeByID godoc
+// @Summary      Get identifier type by ID
+// @Description  Retrieves an identifier type by its ID.
+// @Tags         identifier-types
+// @Accept       json
+// @Produce      json
+// @Param        id  path      string  true  "Identifier Type ID"
+// @Success      200 {object} models.IdentifierType "Successfully retrieved identifier type"
+// @Failure      404 {object} models.ErrorResponse "Identifier Type not found"
+// @Failure      403 {object} models.ErrorResponse "Access denied"
+// @Security     ApiKeyAuth
+// @Router       /identifier-types/{id} [get]
 func (itc *IdentifierTypeController) GetIdentifierTypeByID(c *gin.Context) {
 	permissionId := config.PERMISSION_GET_IDENTIFIER_TYPE_BY_ID
 

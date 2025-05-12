@@ -19,6 +19,18 @@ type ItemTypeController struct {
 func NewItemTypeController(service *services.ItemTypeService, auth *utilities.AuthorizationUtil, log *utilities.LogUtil) *ItemTypeController {
 	return &ItemTypeController{Service: service, Auth: auth, Log: log}
 }
+
+// GetItemTypeByID godoc
+// @Summary      Get item type by ID
+// @Description  Retrieves the details of a specific item type by its ID.
+// @Tags         item-types
+// @Produce      json
+// @Param        id   path      string                 true  "Item Type ID"
+// @Success      200  {object}  models.ItemType        "Item Type retrieved successfully"
+// @Failure      404  {object}  models.ErrorResponse   "Item Type not found"
+// @Failure      500  {object}  models.ErrorResponse   "Error registering log"
+// @Security     ApiKeyAuth
+// @Router       /item-types/{id} [get]
 func (itc *ItemTypeController) GetItemTypeByID(c *gin.Context) {
 	id := c.Param("id")
 
@@ -44,6 +56,15 @@ func (itc *ItemTypeController) GetItemTypeByID(c *gin.Context) {
 	c.JSON(http.StatusOK, itemType)
 }
 
+// GetItemTypes godoc
+// @Summary      Get all item types
+// @Description  Retrieves a list of all item types.
+// @Tags         item-types
+// @Produce      json
+// @Success      200  {array}   models.ItemType         "List of item types retrieved successfully"
+// @Failure      500  {object}  models.ErrorResponse    "Error retrieving item types or registering log"
+// @Security     ApiKeyAuth
+// @Router       /item-types [get]
 func (itc *ItemTypeController) GetItemTypes(c *gin.Context) {
 	if itc.Log.RegisterLog(c, "Attempting to retrieve all ItemTypes") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})

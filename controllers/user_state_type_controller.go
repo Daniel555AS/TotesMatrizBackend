@@ -19,6 +19,19 @@ func NewUserStateTypeController(service *services.UserStateTypeService, auth *ut
 	return &UserStateTypeController{Service: service, Auth: auth, Log: log}
 }
 
+// GetUserStateTypeByID godoc
+// @Summary      Get user state type by ID
+// @Description  Retrieves a user state type by its unique ID.
+// @Tags         user_state_types
+// @Accept       json
+// @Produce      json
+// @Param        id      path     string  true  "User State Type ID"
+// @Success      200     {object}  models.UserStateType  "User State Type details"
+// @Failure      403     {object}  models.ErrorResponse  "Permission denied"
+// @Failure      404     {object}  models.ErrorResponse  "User State Type not found"
+// @Failure      500     {object}  models.ErrorResponse  "Internal server error"
+// @Security     ApiKeyAuth
+// @Router       /user-state-types/{id} [get]
 func (ustc *UserStateTypeController) GetUserStateTypeByID(c *gin.Context) {
 	permissionId := config.PERMISSION_GET_USER_STATE_TYPE_BY_ID
 
@@ -45,6 +58,17 @@ func (ustc *UserStateTypeController) GetUserStateTypeByID(c *gin.Context) {
 	c.JSON(http.StatusOK, userStateType)
 }
 
+// GetAllUserStateTypes godoc
+// @Summary      Get all user state types
+// @Description  Retrieves a list of all user state types available in the system.
+// @Tags         user_state_types
+// @Accept       json
+// @Produce      json
+// @Success      200     {array}   models.UserStateType  "List of User State Types"
+// @Failure      403     {object}  models.ErrorResponse  "Permission denied"
+// @Failure      500     {object}  models.ErrorResponse  "Internal server error"
+// @Security     ApiKeyAuth
+// @Router       /user-state-types [get]
 func (ustc *UserStateTypeController) GetAllUserStateTypes(c *gin.Context) {
 	permissionId := config.PERMISSION_GET_ALL_USER_STATE_TYPES
 

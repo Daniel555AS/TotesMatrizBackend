@@ -19,6 +19,18 @@ func NewOrderStateTypeController(service *services.OrderStateTypeService, auth *
 	return &OrderStateTypeController{Service: service, Auth: auth, Log: log}
 }
 
+// GetOrderStateTypeByID godoc
+// @Summary      Get order state type by ID
+// @Description  Retrieves a specific order state type using its ID.
+// @Tags         order-state-types
+// @Produce      json
+// @Param        id   path      int                         true  "Order State Type ID"
+// @Success      200  {object}  models.OrderStateType       "Order state type retrieved successfully"
+// @Failure      403  {object}  models.ErrorResponse        "Access denied"
+// @Failure      404  {object}  models.ErrorResponse        "Order state type not found"
+// @Failure      500  {object}  models.ErrorResponse        "Internal server error"
+// @Security     ApiKeyAuth
+// @Router       /order-state-types/{id} [get]
 func (ostc *OrderStateTypeController) GetOrderStateTypeByID(c *gin.Context) {
 	permissionId := config.PERMISSION_GET_ORDER_STATE_TYPE_BY_ID
 
@@ -46,6 +58,16 @@ func (ostc *OrderStateTypeController) GetOrderStateTypeByID(c *gin.Context) {
 	c.JSON(http.StatusOK, orderStateType)
 }
 
+// GetAllOrderStateTypes godoc
+// @Summary      Get all order state types
+// @Description  Retrieves a list of all available order state types.
+// @Tags         order-state-types
+// @Produce      json
+// @Success      200  {array}   models.OrderStateType       "List of order state types"
+// @Failure      403  {object}  models.ErrorResponse        "Access denied"
+// @Failure      500  {object}  models.ErrorResponse        "Internal server error"
+// @Security     ApiKeyAuth
+// @Router       /order-state-types [get]
 func (ostc *OrderStateTypeController) GetAllOrderStateTypes(c *gin.Context) {
 	permissionId := config.PERMISSION_GET_ALL_ORDER_STATE_TYPES
 

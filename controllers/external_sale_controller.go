@@ -22,6 +22,19 @@ func NewExternalSaleController(service *services.ExternalSaleService, auth *util
 	return &ExternalSaleController{Service: service, Auth: auth, Log: log}
 }
 
+// GetExternalSaleByID godoc
+// @Summary      Retrieve external sale by ID
+// @Description  Fetches the details of a specific external sale by its ID.
+// @Tags         external-sales
+// @Accept       json
+// @Produce      json
+// @Param        id path string true "External Sale ID"
+// @Success      200 {object} dtos.GetExternalSaleDTO "Successfully retrieved external sale"
+// @Failure      403 {object} models.ErrorResponse "Access denied"
+// @Failure      404 {object} models.ErrorResponse "External sale not found"
+// @Failure      500 {object} models.ErrorResponse "Error retrieving external sale"
+// @Security     ApiKeyAuth
+// @Router       /external-sales/{id} [get]
 func (esc *ExternalSaleController) GetExternalSaleByID(c *gin.Context) {
 	id := c.Param("id")
 
@@ -59,6 +72,17 @@ func (esc *ExternalSaleController) GetExternalSaleByID(c *gin.Context) {
 	c.JSON(http.StatusOK, dto)
 }
 
+// GetAllExternalSales godoc
+// @Summary      Retrieve all external sales
+// @Description  Fetches a list of all external sales, including related items and customers.
+// @Tags         external-sales
+// @Accept       json
+// @Produce      json
+// @Success      200 {array} dtos.GetExternalSaleDTO "Successfully retrieved all external sales"
+// @Failure      403 {object} models.ErrorResponse "Access denied"
+// @Failure      500 {object} models.ErrorResponse "Error retrieving external sales"
+// @Security     ApiKeyAuth
+// @Router       /external-sales [get]
 func (esc *ExternalSaleController) GetAllExternalSales(c *gin.Context) {
 	if esc.Log.RegisterLog(c, "Fetching all external sales") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -99,6 +123,18 @@ func (esc *ExternalSaleController) GetAllExternalSales(c *gin.Context) {
 	c.JSON(http.StatusOK, externalSalesDTO)
 }
 
+// CreateExternalSale godoc
+// @Summary      Create a new external sale
+// @Description  Creates a new external sale, including the sale details and customer information.
+// @Tags         external-sales
+// @Accept       json
+// @Produce      json
+// @Param        external-sale body dtos.CreateExternalSaleDTO true "External Sale data"
+// @Success      201 {object} dtos.GetExternalSaleDTO "Successfully created external sale"
+// @Failure      400 {object} models.ErrorResponse "Invalid JSON format"
+// @Failure      500 {object} models.ErrorResponse "Error creating external sale"
+// @Security     ApiKeyAuth
+// @Router       /external-sales [post]
 func (esc *ExternalSaleController) CreateExternalSale(c *gin.Context) {
 
 	if esc.Log.RegisterLog(c, "Creating new external sale") != nil {

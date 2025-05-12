@@ -21,6 +21,20 @@ func NewDiscountTypeController(service *services.DiscountTypeService, auth *util
 	return &DiscountTypeController{Service: service, Auth: auth, Log: log}
 }
 
+// GetDiscountTypeByID godoc
+// @Summary      Get a discount type by ID
+// @Description  Retrieves a specific discount type based on its ID. Requires appropriate permission.
+// @Tags         discount-types
+// @Accept       json
+// @Produce      json
+// @Param        id  path     string              true  "Discount Type ID"
+// @Success      200 {object} models.DiscountType "The requested discount type"
+// @Failure      400 {object} models.ErrorResponse "Invalid ID format"
+// @Failure      401 {object} models.ErrorResponse "Unauthorized or permission denied"
+// @Failure      404 {object} models.ErrorResponse "Discount type not found"
+// @Failure      500 {object} models.ErrorResponse "Internal server error or failure in retrieving discount type"
+// @Security     ApiKeyAuth
+// @Router       /discount-types/{id} [get]
 func (dtc *DiscountTypeController) GetDiscountTypeByID(c *gin.Context) {
 	id := c.Param("id")
 
@@ -46,6 +60,17 @@ func (dtc *DiscountTypeController) GetDiscountTypeByID(c *gin.Context) {
 	c.JSON(http.StatusOK, discountType)
 }
 
+// GetAllDiscountTypes godoc
+// @Summary      Get all discount types
+// @Description  Retrieves all available discount types. Requires appropriate permission.
+// @Tags         discount-types
+// @Accept       json
+// @Produce      json
+// @Success      200 {array} models.DiscountType "List of all discount types"
+// @Failure      401 {object} models.ErrorResponse "Unauthorized or permission denied"
+// @Failure      500 {object} models.ErrorResponse "Internal server error or failure in retrieving discount types"
+// @Security     ApiKeyAuth
+// @Router       /discount-types [get]
 func (dtc *DiscountTypeController) GetAllDiscountTypes(c *gin.Context) {
 	if dtc.Log.RegisterLog(c, "Attempting to retrieve all discount types") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -69,6 +94,19 @@ func (dtc *DiscountTypeController) GetAllDiscountTypes(c *gin.Context) {
 	c.JSON(http.StatusOK, discountTypes)
 }
 
+// CreateDiscountType godoc
+// @Summary      Create a new discount type
+// @Description  Allows the creation of a new discount type in the system. Requires appropriate permissions.
+// @Tags         discount-types
+// @Accept       json
+// @Produce      json
+// @Param        discountType body models.DiscountType true "Discount type details"
+// @Success      201 {object} models.DiscountType "Successfully created discount type"
+// @Failure      400 {object} models.ErrorResponse "Invalid input data"
+// @Failure      401 {object} models.ErrorResponse "Unauthorized or permission denied"
+// @Failure      500 {object} models.ErrorResponse "Internal server error or failure in creating the discount type"
+// @Security     ApiKeyAuth
+// @Router       /discount-types [post]
 func (dtc *DiscountTypeController) CreateDiscountType(c *gin.Context) {
 	if dtc.Log.RegisterLog(c, "Attempting to create a new discount type") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})

@@ -25,6 +25,20 @@ func NewUserController(service *services.UserService, auth *utilities.Authorizat
 	return &UserController{Service: service, Auth: auth, Log: log}
 }
 
+// GetUserByID godoc
+// @Summary      Get a user by ID
+// @Description  Retrieves a user by their ID. Returns user details if found, otherwise returns an error.
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        id  path     string  true  "User ID"
+// @Success      200  {object}  dtos.GetUserDTO  "User details"
+// @Failure      400  {object}  models.ErrorResponse  "Invalid ID format"
+// @Failure      403  {object}  models.ErrorResponse  "Permission denied"
+// @Failure      404  {object}  models.ErrorResponse  "User not found"
+// @Failure      500  {object}  models.ErrorResponse  "Error retrieving user"
+// @Security     ApiKeyAuth
+// @Router       /users/{id} [get]
 func (uc *UserController) GetUserByID(c *gin.Context) {
 	id := c.Param("id")
 
@@ -66,6 +80,18 @@ func (uc *UserController) GetUserByID(c *gin.Context) {
 	c.JSON(http.StatusOK, userDTO)
 }
 
+// GetAllUsers godoc
+// @Summary      Get all users
+// @Description  Retrieves a list of all users in the system.
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Success      200  {array}  dtos.GetUserDTO  "List of users"
+// @Failure      403  {object}  models.ErrorResponse  "Permission denied"
+// @Failure      404  {object}  models.ErrorResponse  "Users not found"
+// @Failure      500  {object}  models.ErrorResponse  "Error retrieving users"
+// @Security     ApiKeyAuth
+// @Router       /users [get]
 func (uc *UserController) GetAllUsers(c *gin.Context) {
 	permissionId := config.PERMISSION_GET_ALL_USERS
 
@@ -104,6 +130,20 @@ func (uc *UserController) GetAllUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, usersDTO)
 }
 
+// SearchUsersByID godoc
+// @Summary      Search users by ID
+// @Description  Searches for users by ID based on the provided query parameter.
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        id   query     string  true  "User ID to search"
+// @Success      200  {array}  dtos.GetUserDTO  "List of users matching the search criteria"
+// @Failure      400  {object}  models.ErrorResponse  "Query parameter is required"
+// @Failure      403  {object}  models.ErrorResponse  "Permission denied"
+// @Failure      404  {object}  models.ErrorResponse  "Users not found"
+// @Failure      500  {object}  models.ErrorResponse  "Error searching users"
+// @Security     ApiKeyAuth
+// @Router       /users/searchByID [get]
 func (uc *UserController) SearchUsersByID(c *gin.Context) {
 	permissionId := config.PERMISSION_SEARCH_USER_BY_ID
 	query := c.Query("id")
@@ -155,6 +195,20 @@ func (uc *UserController) SearchUsersByID(c *gin.Context) {
 	c.JSON(http.StatusOK, usersDTO)
 }
 
+// SearchUsersByEmail godoc
+// @Summary      Search users by email
+// @Description  Searches for users by email based on the provided query parameter.
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        email   query     string  true  "User email to search"
+// @Success      200     {array}  dtos.GetUserDTO  "List of users matching the search criteria"
+// @Failure      400     {object}  models.ErrorResponse  "Query parameter is required"
+// @Failure      403     {object}  models.ErrorResponse  "Permission denied"
+// @Failure      404     {object}  models.ErrorResponse  "Users not found"
+// @Failure      500     {object}  models.ErrorResponse  "Error searching users"
+// @Security     ApiKeyAuth
+// @Router       /users/searchByEmail [get]
 func (uc *UserController) SearchUsersByEmail(c *gin.Context) {
 	permissionId := config.PERMISSION_SEARCH_USERS_BY_EMAIL
 	query := c.Query("email")
@@ -206,31 +260,51 @@ func (uc *UserController) SearchUsersByEmail(c *gin.Context) {
 	c.JSON(http.StatusOK, usersDTO)
 }
 
+type request struct {
+	UserState int `json:"user_state"` // Correctly defines the JSON binding
+}
+
+// UpdateUserState godoc
+// @Summary      Update user state
+// @Description  Updates the state of a user based on the provided user ID and state value.
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        id      path     string  true  "User ID"
+// @Param        body    body     request  true  "User state to update" // Updated 'object' to 'body' and set 'true'
+// @Success      200     {object}  dtos.GetUserDTO  "Updated user information"
+// @Failure      400     {object}  models.ErrorResponse  "Invalid request body"
+// @Failure      403     {object}  models.ErrorResponse  "Permission denied"
+// @Failure      404     {object}  models.ErrorResponse  "User not found"
+// @Failure      500     {object}  models.ErrorResponse  "Error updating user state"
+// @Security     ApiKeyAuth
+// @Router       /users/{id}/state [patch]
 func (uc *UserController) UpdateUserState(c *gin.Context) {
+	var request request
 	permissionId := config.PERMISSION_UPDATE_USER_STATE
 	id := c.Param("id")
 
+	// Log de intento
 	if uc.Log.RegisterLog(c, "Attempting to update user state for ID: "+id) != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
 		return
 	}
 
+	// Check permission
 	if !uc.Auth.CheckPermission(c, permissionId) {
 		_ = uc.Log.RegisterLog(c, "Access denied for UpdateUserState")
 		c.JSON(http.StatusForbidden, gin.H{"error": "Access denied"})
 		return
 	}
 
-	var request struct {
-		UserState int `json:"user_state"`
-	}
-
+	// Bind JSON request body to request struct
 	if err := c.ShouldBindJSON(&request); err != nil {
 		_ = uc.Log.RegisterLog(c, "Invalid request body for UpdateUserState: "+err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
+	// Update user state
 	user, err := uc.Service.UpdateUserState(id, request.UserState)
 	if err != nil {
 		_ = uc.Log.RegisterLog(c, "User not found with ID "+id+" while updating state")
@@ -238,6 +312,7 @@ func (uc *UserController) UpdateUserState(c *gin.Context) {
 		return
 	}
 
+	// Prepare userDTO to return
 	userDTO := dtos.GetUserDTO{
 		ID:          user.ID,
 		Email:       user.Email,
@@ -246,10 +321,26 @@ func (uc *UserController) UpdateUserState(c *gin.Context) {
 		UserStateID: user.UserStateTypeID,
 	}
 
+	// Log success and return response
 	_ = uc.Log.RegisterLog(c, "Successfully updated user state for ID: "+id)
 	c.JSON(http.StatusOK, userDTO)
 }
 
+// UpdateUser godoc
+// @Summary      Update user information
+// @Description  Updates user details such as email, password, user type, and state.
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        id      path     string  true  "User ID"
+// @Param        body    body     dtos.UpdateUserDTO  true  "User details to update"
+// @Success      200     {object}  dtos.GetUserDTO  "Updated user information"
+// @Failure      400     {object}  models.ErrorResponse  "Invalid request body"
+// @Failure      403     {object}  models.ErrorResponse  "Permission denied"
+// @Failure      404     {object}  models.ErrorResponse  "User not found"
+// @Failure      500     {object}  models.ErrorResponse  "Error updating user information"
+// @Security     ApiKeyAuth
+// @Router       /users/{id} [put]
 func (uc *UserController) UpdateUser(c *gin.Context) {
 	permissionId := config.PERMISSION_UPDATE_USER
 	id := c.Param("id")
@@ -309,6 +400,20 @@ func (uc *UserController) UpdateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, dtoUser)
 }
 
+// CreateUser godoc
+// @Summary      Create a new user
+// @Description  Creates a new user with the provided email, password, user type, and state.
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        body    body     dtos.CreateUserDTO  true  "User details to create"
+// @Success      201     {object}  dtos.GetUserDTO  "Created user information"
+// @Failure      400     {object}  models.ErrorResponse  "Invalid request body"
+// @Failure      403     {object}  models.ErrorResponse  "Permission denied"
+// @Failure      409     {object}  models.ErrorResponse  "Email already in use"
+// @Failure      500     {object}  models.ErrorResponse  "Error creating user"
+// @Security     ApiKeyAuth
+// @Router       /users [post]
 func (uc *UserController) CreateUser(c *gin.Context) {
 	permissionId := config.PERMISSION_CREATE_USER
 

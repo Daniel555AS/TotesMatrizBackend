@@ -26,6 +26,20 @@ func NewAppointmentController(service *services.AppointmentService, auth *utilit
 	return &AppointmentController{Service: service, Auth: auth, Log: log}
 }
 
+// GetAppointmentByID godoc
+// @Summary      Get Appointment by ID
+// @Description  Retrieves an appointment by its unique ID. Requires permission.
+// @Tags         appointments
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "Appointment ID"
+// @Success      200  {object}  models.Appointment           "The appointment object"
+// @Failure      400  {object}  models.ErrorResponse         "Invalid appointment ID"
+// @Failure      401  {object}  models.ErrorResponse         "Unauthorized or permission denied"
+// @Failure      404  {object}  models.ErrorResponse         "Appointment not found"
+// @Failure      500  {object}  models.ErrorResponse         "Internal server error"
+// @Security     ApiKeyAuth
+// @Router       /appointments/{id} [get]
 func (ac *AppointmentController) GetAppointmentByID(c *gin.Context) {
 	if ac.Log.RegisterLog(c, "Attempting to get appointment by ID") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -56,6 +70,17 @@ func (ac *AppointmentController) GetAppointmentByID(c *gin.Context) {
 	c.JSON(http.StatusOK, appointment)
 }
 
+// GetAllAppointments godoc
+// @Summary      Get all appointments
+// @Description  Retrieves a list of all appointments. Requires proper permission.
+// @Tags         appointments
+// @Accept       json
+// @Produce      json
+// @Success      200  {array}   models.Appointment       "List of all appointments"
+// @Failure      401  {object}  models.ErrorResponse     "Unauthorized or permission denied"
+// @Failure      500  {object}  models.ErrorResponse     "Error retrieving appointments or logging"
+// @Security     ApiKeyAuth
+// @Router       /appointments [get]
 func (ac *AppointmentController) GetAllAppointments(c *gin.Context) {
 	if ac.Log.RegisterLog(c, "Attempting to retrieve all appointments") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -79,6 +104,19 @@ func (ac *AppointmentController) GetAllAppointments(c *gin.Context) {
 	c.JSON(http.StatusOK, appointments)
 }
 
+// SearchAppointmentsByID godoc
+// @Summary      Search appointments by ID
+// @Description  Search appointments using a partial or complete ID string. Requires permission.
+// @Tags         appointments
+// @Accept       json
+// @Produce      json
+// @Param        id     query     string  true  "Appointment ID to search"
+// @Success      200    {array}   models.Appointment
+// @Failure      401    {object} models.ErrorResponse  "Unauthorized or permission denied"
+// @Failure      404    {object}  models.ErrorResponse   "No appointments found"
+// @Failure      500    {object}  models.ErrorResponse  "Error retrieving appointments or logging"
+// @Security     ApiKeyAuth
+// @Router       /appointments/searchByID [get]
 func (ac *AppointmentController) SearchAppointmentsByID(c *gin.Context) {
 
 	if ac.Log.RegisterLog(c, "Attempting to search appointments by ID") != nil {
@@ -112,6 +150,19 @@ func (ac *AppointmentController) SearchAppointmentsByID(c *gin.Context) {
 	c.JSON(http.StatusOK, appointments)
 }
 
+// SearchAppointmentsByCustomerID godoc
+// @Summary      Search appointments by Customer ID
+// @Description  Search appointments by the customer's ID. Requires permission to access this data.
+// @Tags         appointments
+// @Accept       json
+// @Produce      json
+// @Param        id     query     string  true  "Customer ID to search appointments"
+// @Success      200    {array}   models.Appointment   "List of appointments found"
+// @Failure      401    {object} models.ErrorResponse   "Unauthorized or permission denied"
+// @Failure      404    {object}  models.ErrorResponse   "No appointments found for the given customer ID"
+// @Failure      500    {object}  models.ErrorResponse  "Error retrieving appointments or logging"
+// @Security     ApiKeyAuth
+// @Router       /appointments/searchByCustomerID [get]
 func (ac *AppointmentController) SearchAppointmentsByCustomerID(c *gin.Context) {
 
 	if ac.Log.RegisterLog(c, "Attempting to search appointments by customer ID") != nil {
@@ -144,6 +195,20 @@ func (ac *AppointmentController) SearchAppointmentsByCustomerID(c *gin.Context) 
 	_ = ac.Log.RegisterLog(c, "Appointments found by customer ID successfully")
 	c.JSON(http.StatusOK, appointments)
 }
+
+// SearchAppointmentsByState godoc
+// @Summary      Search appointments by state
+// @Description  Search appointments based on their state (e.g., confirmed, pending). Requires permission to access this data.
+// @Tags         appointments
+// @Accept       json
+// @Produce      json
+// @Param        state   query     bool    true  "State of the appointment (true for confirmed, false for pending)"
+// @Success      200     {array}   models.Appointment   "List of appointments found based on state"
+// @Failure      400     {object}  models.ErrorResponse   "Invalid state value provided"
+// @Failure      401     {object}  models.ErrorResponse   "Unauthorized or permission denied"
+// @Failure      500     {object}  models.ErrorResponse   "Error retrieving appointments or logging"
+// @Security     ApiKeyAuth
+// @Router       /appointments/searchByState [get]
 func (ac *AppointmentController) SearchAppointmentsByState(c *gin.Context) {
 
 	if ac.Log.RegisterLog(c, "Attempting to search appointments by state") != nil {
@@ -175,6 +240,18 @@ func (ac *AppointmentController) SearchAppointmentsByState(c *gin.Context) {
 	c.JSON(http.StatusOK, appointments)
 }
 
+// GetAppointmentsByCustomerID godoc
+// @Summary      Get appointments by customer ID
+// @Description  Retrieves a list of appointments associated with a specific customer. Requires permission to view appointments by customer ID.
+// @Tags         appointments
+// @Accept       json
+// @Produce      json
+// @Param        customerID  path      int                          true  "ID of the customer"
+// @Success      200         {array}   models.Appointment           "List of appointments"
+// @Failure      400         {object}  models.ErrorResponse       "Invalid customer ID"
+// @Failure      401         {object} models.ErrorResponse        "Unauthorized or permission denied"
+// @Failure      500         {object}  models.ErrorResponse       "Error retrieving appointments"
+// @Router       /appointments/customer/{customerID} [get]
 func (ac *AppointmentController) GetAppointmentsByCustomerID(c *gin.Context) {
 
 	if ac.Log.RegisterLog(c, "Attempting to retrieve appointments by customer ID") != nil {
@@ -206,6 +283,19 @@ func (ac *AppointmentController) GetAppointmentsByCustomerID(c *gin.Context) {
 	c.JSON(http.StatusOK, appointments)
 }
 
+// CreateAppointment godoc
+// @Summary      Create a new appointment
+// @Description  Create a new appointment in the system. Requires permission to create appointments.
+// @Tags         appointments
+// @Accept       json
+// @Produce      json
+// @Param        appointment  body      models.Appointment  true  "Appointment data to create"
+// @Success      201          {object}  models.Appointment  "Appointment successfully created"
+// @Failure      400          {object}  models.ErrorResponse   "Invalid JSON format or appointment limit reached"
+// @Failure      403          {object}  models.ErrorResponse   "Forbidden, no permission to create appointments"
+// @Failure      500          {object}  models.ErrorResponse   "Error creating appointment or logging"
+// @Security     ApiKeyAuth
+// @Router       /appointments [post]
 func (ac *AppointmentController) CreateAppointment(c *gin.Context) {
 	if ac.Log.RegisterLog(c, "Attempting to create appointment") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -242,6 +332,21 @@ func (ac *AppointmentController) CreateAppointment(c *gin.Context) {
 	c.JSON(http.StatusCreated, createdAppointment)
 }
 
+// UpdateAppointment godoc
+// @Summary      Update an existing appointment
+// @Description  Update the details of an existing appointment. Requires permission to update appointments.
+// @Tags         appointments
+// @Accept       json
+// @Produce      json
+// @Param        id          path      int                 true  "Appointment ID to update"
+// @Param        appointment body      models.Appointment   true  "Appointment data to update"
+// @Success      200         {object}  models.Appointment   "Appointment successfully updated"
+// @Failure      400         {object}  models.ErrorResponse   "Invalid appointment ID or JSON format"
+// @Failure      403         {object} models.ErrorResponse   "Forbidden, no permission to update appointments"
+// @Failure      404         {object} models.ErrorResponse   "Appointment not found for update"
+// @Failure      500         {object}  models.ErrorResponse   "Error updating appointment or logging"
+// @Security     ApiKeyAuth
+// @Router       /appointments/{id} [put]
 func (ac *AppointmentController) UpdateAppointment(c *gin.Context) {
 
 	if ac.Log.RegisterLog(c, "Attempting to update appointment") != nil {
@@ -288,6 +393,21 @@ func (ac *AppointmentController) UpdateAppointment(c *gin.Context) {
 	c.JSON(http.StatusOK, appointment)
 }
 
+// GetAppointmentByCustomerIDAndDate godoc
+// @Summary      Get appointment by customer ID and date
+// @Description  Retrieve an appointment based on the customer ID and appointment date. Requires permission to get appointments.
+// @Tags         appointments
+// @Accept       json
+// @Produce      json
+// @Param        customerId  query     int    true  "Customer ID"
+// @Param        dateTime    query     string true  "Appointment date and time (format: YYYY-MM-DD HH:MM:SS)"
+// @Success      200         {object}  models.Appointment  "Appointment successfully retrieved"
+// @Failure      400         {object}  models.ErrorResponse   "Invalid customer ID or date format"
+// @Failure      401         {object}  models.ErrorResponse   "Unauthorized or permission denied"
+// @Failure      404         {object} models.ErrorResponse   "Appointment not found for the given customer ID and date"
+// @Failure      500         {object}  models.ErrorResponse  "Error retrieving appointment or logging"
+// @Security     ApiKeyAuth
+// @Router       /appointments/byCustomerIdAndDate [get]
 func (ac *AppointmentController) GetAppointmentByCustomerIDAndDate(c *gin.Context) {
 
 	if ac.Log.RegisterLog(c, "Attempting to get appointment by customer ID and date") != nil {
@@ -337,6 +457,20 @@ func (ac *AppointmentController) GetAppointmentByCustomerIDAndDate(c *gin.Contex
 	c.JSON(http.StatusOK, response)
 }
 
+// DeleteAppointmentByID godoc
+// @Summary      Delete appointment by ID
+// @Description  Delete an appointment based on the appointment ID. Requires permission to delete appointments.
+// @Tags         appointments
+// @Accept       json
+// @Produce      json
+// @Param        id  path     int  true  "Appointment ID"
+// @Success      200 {object} models.MessageResponse "Appointment deleted successfully"
+// @Failure      400 {object} models.ErrorResponse  "Invalid appointment ID format"
+// @Failure      401 {object} models.ErrorResponse  "Unauthorized or permission denied"
+// @Failure      404 {object} models.ErrorResponse  "Appointment not found for the given ID"
+// @Failure      500 {object} models.ErrorResponse  "Error deleting the appointment"
+// @Security     ApiKeyAuth
+// @Router       /appointments/deleteAppointment/{id} [delete]
 func (ac *AppointmentController) DeleteAppointmentByID(c *gin.Context) {
 	if ac.Log.RegisterLog(c, "Attempting to delete appointment") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -374,6 +508,19 @@ func (ac *AppointmentController) DeleteAppointmentByID(c *gin.Context) {
 
 }
 
+// GetAppointmentsByHourRange godoc
+// @Summary      Get appointment count by hourly range for a specific date
+// @Description  Retrieves the number of appointments for each hour within a specified date. Requires permission to view appointments by hour.
+// @Tags         appointments
+// @Accept       json
+// @Produce      json
+// @Param        date  query     string  true  "Date in YYYY-MM-DD format"
+// @Success      200  {array}  models.Appointment  "List of hourly appointment counts"
+// @Failure      400  {object}  models.ErrorResponse  "Invalid date format or missing 'date' parameter"
+// @Failure      401  {object}  models.ErrorResponse "Unauthorized or permission denied"
+// @Failure      500  {object}  models.ErrorResponse  "Error retrieving appointment counts"
+// @Security     ApiKeyAuth
+// @Router       /appointments/hourly-count [get]
 func (c *AppointmentController) GetAppointmentsByHourRange(ctx *gin.Context) {
 
 	permissionId := config.PERMISSION_GET_APPOINTMENTS_BY_HOUR

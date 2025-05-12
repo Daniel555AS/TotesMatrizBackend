@@ -1,4 +1,668 @@
 basePath: /
+definitions:
+  controllers.LoginData:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  controllers.SubtotalResponse:
+    properties:
+      subtotal:
+        type: number
+    type: object
+  controllers.TotalResponse:
+    properties:
+      total:
+        type: number
+    type: object
+  controllers.request:
+    properties:
+      user_state:
+        description: Correctly defines the JSON binding
+        type: integer
+    type: object
+  dtos.BillingItemDTO:
+    properties:
+      id:
+        type: integer
+      stock:
+        type: integer
+    type: object
+  dtos.CalculateTotalRequestDTO:
+    properties:
+      discountTypesIds:
+        items:
+          type: integer
+        type: array
+      itemsDTO:
+        items:
+          $ref: '#/definitions/dtos.BillingItemDTO'
+        type: array
+      taxTypesIds:
+        items:
+          type: integer
+        type: array
+    type: object
+  dtos.CreateCommentDTO:
+    properties:
+      comment:
+        type: string
+      email:
+        type: string
+      last_name:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      residence_city:
+        type: string
+      residence_state:
+        type: string
+    type: object
+  dtos.CreateCustomerDTO:
+    properties:
+      address:
+        type: string
+      customerId:
+        type: string
+      customerName:
+        type: string
+      customerState:
+        type: boolean
+      email:
+        type: string
+      identifierTypeId:
+        type: integer
+      isBusiness:
+        type: boolean
+      lastName:
+        type: string
+      phoneNumbers:
+        type: string
+    required:
+    - customerId
+    - customerName
+    - email
+    - identifierTypeId
+    - lastName
+    type: object
+  dtos.CreateEmployeeDTO:
+    properties:
+      address:
+        type: string
+      identifier_type_id:
+        type: integer
+      last_names:
+        type: string
+      names:
+        type: string
+      personal_id:
+        type: string
+      phone_numbers:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  dtos.CreateExternalSaleDTO:
+    properties:
+      address:
+        type: string
+      customerId:
+        type: string
+      customerName:
+        type: string
+      email:
+        type: string
+      identifierTypeId:
+        type: integer
+      isBusiness:
+        type: boolean
+      item_id:
+        type: integer
+      lastName:
+        type: string
+      phoneNumbers:
+        type: string
+      reporter_id:
+        type: string
+      reporter_name:
+        type: string
+      stock:
+        type: integer
+    required:
+    - customerId
+    - customerName
+    - email
+    - identifierTypeId
+    - item_id
+    - lastName
+    - reporter_id
+    - reporter_name
+    type: object
+  dtos.CreateInvoiceDTO:
+    properties:
+      customer_id:
+        type: integer
+      discounts:
+        items:
+          type: integer
+        type: array
+      enterprise_data:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/dtos.BillingItemDTO'
+        type: array
+      taxes:
+        items:
+          type: integer
+        type: array
+    type: object
+  dtos.CreatePurchaseOrderDTO:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/dtos.BillingItemDTO'
+        type: array
+    type: object
+  dtos.CreateUserDTO:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      user_state:
+        type: integer
+      user_type:
+        type: integer
+    type: object
+  dtos.GetCommentDTO:
+    properties:
+      comment:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      residence_city:
+        type: string
+      residence_state:
+        type: string
+    type: object
+  dtos.GetCustomerDTO:
+    properties:
+      address:
+        type: string
+      customerId:
+        type: string
+      customerName:
+        type: string
+      customerState:
+        type: boolean
+      email:
+        type: string
+      id:
+        type: integer
+      identifierTypeId:
+        type: integer
+      isBusiness:
+        type: boolean
+      lastName:
+        type: string
+      phoneNumbers:
+        type: string
+    type: object
+  dtos.GetEmployeeDTO:
+    properties:
+      address:
+        type: string
+      id:
+        type: integer
+      identifier_type_id:
+        type: integer
+      last_names:
+        type: string
+      names:
+        type: string
+      personal_id:
+        type: string
+      phone_numbers:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  dtos.GetExternalSaleDTO:
+    properties:
+      customer_email:
+        type: string
+      customer_id:
+        type: integer
+      id:
+        type: integer
+      item_id:
+        type: integer
+      item_name:
+        type: string
+      reporter_id:
+        type: string
+      reporter_name:
+        type: string
+      stock:
+        type: integer
+    type: object
+  dtos.GetInvoiceDTO:
+    properties:
+      customer_id:
+        type: integer
+      date_time:
+        type: string
+      discounts:
+        items:
+          type: integer
+        type: array
+      enterprise_data:
+        type: string
+      id:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/dtos.BillingItemDTO'
+        type: array
+      subtotal:
+        type: number
+      taxes:
+        items:
+          type: integer
+        type: array
+      total:
+        type: number
+    type: object
+  dtos.GetItemDTO:
+    properties:
+      additional_expenses:
+        items:
+          type: integer
+        type: array
+      description:
+        type: string
+      id:
+        type: integer
+      item_state:
+        type: boolean
+      item_type_id:
+        type: integer
+      name:
+        type: string
+      purchase_price:
+        type: number
+      selling_price:
+        type: number
+      stock:
+        type: integer
+    type: object
+  dtos.GetPurchaseOrderDTO:
+    properties:
+      customer_id:
+        description: Cambiado a puntero
+        type: integer
+      date_time:
+        type: string
+      discounts:
+        items:
+          type: integer
+        type: array
+      id:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/dtos.BillingItemDTO'
+        type: array
+      order_state_id:
+        type: integer
+      responsible_id:
+        description: Cambiado a puntero
+        type: integer
+      seller_id:
+        description: Cambiado a puntero
+        type: integer
+      sub_total:
+        type: number
+      taxes:
+        items:
+          type: integer
+        type: array
+      total:
+        type: number
+    type: object
+  dtos.GetUserDTO:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      user_state:
+        type: integer
+      user_type:
+        type: integer
+    type: object
+  dtos.RoleDTO:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      permissions:
+        items:
+          type: string
+        type: array
+    type: object
+  dtos.SalesReportInvoiceDTO:
+    properties:
+      date_time:
+        type: string
+      discounts:
+        items:
+          $ref: '#/definitions/models.DiscountType'
+        type: array
+      id:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/dtos.BillingItemDTO'
+        type: array
+      subtotal:
+        type: number
+      taxes:
+        items:
+          $ref: '#/definitions/models.TaxType'
+        type: array
+      total:
+        type: number
+    type: object
+  dtos.UpdateAdditionalExpenseDTO:
+    properties:
+      description:
+        type: string
+      expense:
+        type: number
+      item_id:
+        type: integer
+      name:
+        type: string
+    type: object
+  dtos.UpdateCommentDTO:
+    properties:
+      comment:
+        type: string
+      email:
+        type: string
+      last_name:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      residence_city:
+        type: string
+      residence_state:
+        type: string
+    type: object
+  dtos.UpdateCustomerDTO:
+    properties:
+      address:
+        type: string
+      customerId:
+        type: string
+      customerName:
+        type: string
+      customerState:
+        type: boolean
+      email:
+        type: string
+      identifierTypeId:
+        type: integer
+      isBusiness:
+        type: boolean
+      lastName:
+        type: string
+      phoneNumbers:
+        type: string
+    type: object
+  dtos.UpdateEmployeeDTO:
+    properties:
+      address:
+        type: string
+      identifier_type_id:
+        type: integer
+      last_names:
+        type: string
+      names:
+        type: string
+      personal_id:
+        type: string
+      phone_numbers:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  dtos.UpdateItemDTO:
+    properties:
+      description:
+        type: string
+      item_state:
+        type: boolean
+      item_type_id:
+        type: integer
+      name:
+        type: string
+      purchase_price:
+        type: number
+      selling_price:
+        type: number
+      stock:
+        type: integer
+    type: object
+  dtos.UpdateUserDTO:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      user_state:
+        type: integer
+      user_type:
+        type: integer
+    type: object
+  dtos.UserTypeDTO:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      roles:
+        items:
+          type: string
+        type: array
+    type: object
+  models.AdditionalExpense:
+    properties:
+      description:
+        type: string
+      expense:
+        type: number
+      id:
+        type: integer
+      item_id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.Appointment:
+    properties:
+      address:
+        type: string
+      customerId:
+        type: integer
+      customerName:
+        type: string
+      customerState:
+        type: boolean
+      dateTime:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      identifierTypeId:
+        type: integer
+      isBusiness:
+        type: boolean
+      lastName:
+        type: string
+      phoneNumbers:
+        type: string
+      state:
+        type: boolean
+    type: object
+  models.Customer:
+    properties:
+      address:
+        type: string
+      customerId:
+        type: string
+      customerName:
+        description: puede ser nulo
+        type: string
+      customerState:
+        type: boolean
+      email:
+        type: string
+      id:
+        type: integer
+      identifierTypeId:
+        type: integer
+      isBusiness:
+        type: boolean
+      lastName:
+        type: string
+      phoneNumbers:
+        type: string
+    type: object
+  models.DiscountType:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      is_percentage:
+        type: boolean
+      name:
+        type: string
+      value:
+        type: number
+    type: object
+  models.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  models.HistoricalItemPrice:
+    properties:
+      id:
+        type: integer
+      item_id:
+        type: integer
+      modified_at:
+        type: string
+      price:
+        type: number
+    type: object
+  models.IdentifierType:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.ItemType:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.MessageResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  models.OrderStateType:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+    type: object
+  models.Permission:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.Role:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      permissions:
+        items:
+          $ref: '#/definitions/models.Permission'
+        type: array
+    type: object
+  models.TaxType:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      is_percentage:
+        type: boolean
+      name:
+        type: string
+      value:
+        type: number
+    type: object
+  models.UserStateType:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
 host: localhost
 info:
   contact:
@@ -13,6 +677,1763 @@ info:
   title: Totes Backend API
   version: "1.0"
 paths:
+  /additional-expenses:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all additional expense records. Requires permission to
+        view all additional expenses.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: A list of all additional expenses
+          schema:
+            items:
+              $ref: '#/definitions/models.AdditionalExpense'
+            type: array
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving additional expenses
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all additional expenses
+      tags:
+      - additional-expenses
+    post:
+      consumes:
+      - application/json
+      description: Creates a new additional expense record. Requires permission to
+        create an additional expense.
+      parameters:
+      - description: Additional Expense DTO
+        in: body
+        name: expense
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateAdditionalExpenseDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: The created additional expense
+          schema:
+            $ref: '#/definitions/models.AdditionalExpense'
+        "400":
+          description: Invalid JSON format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error creating additional expense
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new additional expense
+      tags:
+      - additional-expenses
+  /additional-expenses/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes an additional expense record by its ID. Requires permission
+        to delete an additional expense.
+      parameters:
+      - description: Additional Expense ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Message indicating successful deletion
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Invalid ID format or request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Additional expense not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error deleting additional expense
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete an additional expense by ID
+      tags:
+      - additional-expenses
+    get:
+      consumes:
+      - application/json
+      description: Retrieves an additional expense record by its ID. Requires permission
+        to view additional expenses by ID.
+      parameters:
+      - description: ID of the additional expense
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The additional expense record
+          schema:
+            $ref: '#/definitions/models.AdditionalExpense'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Additional expense not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error (log registration or DB error)
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get additional expense by ID
+      tags:
+      - additional-expenses
+    put:
+      consumes:
+      - application/json
+      description: Updates the details of an existing additional expense identified
+        by its ID. Requires permission to update an additional expense.
+      parameters:
+      - description: Additional Expense ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated Additional Expense details
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateAdditionalExpenseDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The updated additional expense
+          schema:
+            $ref: '#/definitions/models.AdditionalExpense'
+        "400":
+          description: Invalid request or JSON format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Additional expense not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update an additional expense by ID
+      tags:
+      - additional-expenses
+  /appointments:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all appointments. Requires proper permission.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of all appointments
+          schema:
+            items:
+              $ref: '#/definitions/models.Appointment'
+            type: array
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving appointments or logging
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all appointments
+      tags:
+      - appointments
+    post:
+      consumes:
+      - application/json
+      description: Create a new appointment in the system. Requires permission to
+        create appointments.
+      parameters:
+      - description: Appointment data to create
+        in: body
+        name: appointment
+        required: true
+        schema:
+          $ref: '#/definitions/models.Appointment'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Appointment successfully created
+          schema:
+            $ref: '#/definitions/models.Appointment'
+        "400":
+          description: Invalid JSON format or appointment limit reached
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Forbidden, no permission to create appointments
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error creating appointment or logging
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new appointment
+      tags:
+      - appointments
+  /appointments/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves an appointment by its unique ID. Requires permission.
+      parameters:
+      - description: Appointment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The appointment object
+          schema:
+            $ref: '#/definitions/models.Appointment'
+        "400":
+          description: Invalid appointment ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Appointment not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Appointment by ID
+      tags:
+      - appointments
+    put:
+      consumes:
+      - application/json
+      description: Update the details of an existing appointment. Requires permission
+        to update appointments.
+      parameters:
+      - description: Appointment ID to update
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Appointment data to update
+        in: body
+        name: appointment
+        required: true
+        schema:
+          $ref: '#/definitions/models.Appointment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Appointment successfully updated
+          schema:
+            $ref: '#/definitions/models.Appointment'
+        "400":
+          description: Invalid appointment ID or JSON format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Forbidden, no permission to update appointments
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Appointment not found for update
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error updating appointment or logging
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update an existing appointment
+      tags:
+      - appointments
+  /appointments/byCustomerIdAndDate:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve an appointment based on the customer ID and appointment
+        date. Requires permission to get appointments.
+      parameters:
+      - description: Customer ID
+        in: query
+        name: customerId
+        required: true
+        type: integer
+      - description: 'Appointment date and time (format: YYYY-MM-DD HH:MM:SS)'
+        in: query
+        name: dateTime
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Appointment successfully retrieved
+          schema:
+            $ref: '#/definitions/models.Appointment'
+        "400":
+          description: Invalid customer ID or date format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Appointment not found for the given customer ID and date
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving appointment or logging
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get appointment by customer ID and date
+      tags:
+      - appointments
+  /appointments/customer/{customerID}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of appointments associated with a specific customer.
+        Requires permission to view appointments by customer ID.
+      parameters:
+      - description: ID of the customer
+        in: path
+        name: customerID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of appointments
+          schema:
+            items:
+              $ref: '#/definitions/models.Appointment'
+            type: array
+        "400":
+          description: Invalid customer ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving appointments
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get appointments by customer ID
+      tags:
+      - appointments
+  /appointments/deleteAppointment/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an appointment based on the appointment ID. Requires permission
+        to delete appointments.
+      parameters:
+      - description: Appointment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Appointment deleted successfully
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Invalid appointment ID format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Appointment not found for the given ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error deleting the appointment
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete appointment by ID
+      tags:
+      - appointments
+  /appointments/hourly-count:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves the number of appointments for each hour within a specified
+        date. Requires permission to view appointments by hour.
+      parameters:
+      - description: Date in YYYY-MM-DD format
+        in: query
+        name: date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of hourly appointment counts
+          schema:
+            items:
+              $ref: '#/definitions/models.Appointment'
+            type: array
+        "400":
+          description: Invalid date format or missing 'date' parameter
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving appointment counts
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get appointment count by hourly range for a specific date
+      tags:
+      - appointments
+  /appointments/searchByCustomerID:
+    get:
+      consumes:
+      - application/json
+      description: Search appointments by the customer's ID. Requires permission to
+        access this data.
+      parameters:
+      - description: Customer ID to search appointments
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of appointments found
+          schema:
+            items:
+              $ref: '#/definitions/models.Appointment'
+            type: array
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: No appointments found for the given customer ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving appointments or logging
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search appointments by Customer ID
+      tags:
+      - appointments
+  /appointments/searchByID:
+    get:
+      consumes:
+      - application/json
+      description: Search appointments using a partial or complete ID string. Requires
+        permission.
+      parameters:
+      - description: Appointment ID to search
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Appointment'
+            type: array
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: No appointments found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving appointments or logging
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search appointments by ID
+      tags:
+      - appointments
+  /appointments/searchByState:
+    get:
+      consumes:
+      - application/json
+      description: Search appointments based on their state (e.g., confirmed, pending).
+        Requires permission to access this data.
+      parameters:
+      - description: State of the appointment (true for confirmed, false for pending)
+        in: query
+        name: state
+        required: true
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of appointments found based on state
+          schema:
+            items:
+              $ref: '#/definitions/models.Appointment'
+            type: array
+        "400":
+          description: Invalid state value provided
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving appointments or logging
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search appointments by state
+      tags:
+      - appointments
+  /auth/check-permission:
+    get:
+      consumes:
+      - application/json
+      description: Verifies if the user with the provided email has the specified
+        permission ID
+      parameters:
+      - description: User's email address
+        in: query
+        name: email
+        required: true
+        type: string
+      - description: Permission ID to check
+        in: query
+        name: permission_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response with the permission status
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Invalid or missing parameters
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error checking permission
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Check if a user has a specific permission
+      tags:
+      - authorization
+  /billing/subtotal:
+    post:
+      consumes:
+      - application/json
+      description: Calculates the subtotal based on a list of billing items. Requires
+        permission.
+      parameters:
+      - description: List of billing items
+        in: body
+        name: items
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/dtos.BillingItemDTO'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Calculated subtotal
+          schema:
+            $ref: '#/definitions/controllers.SubtotalResponse'
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Calculation error (e.g., related data not found)
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Calculate subtotal
+      tags:
+      - billing
+  /billing/total:
+    post:
+      consumes:
+      - application/json
+      description: Calculates the total amount based on billing items, discounts,
+        and tax types. Requires permission.
+      parameters:
+      - description: Billing total calculation input
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CalculateTotalRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Calculated total
+          schema:
+            $ref: '#/definitions/controllers.TotalResponse'
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Calculation error (e.g., related data not found)
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Calculate total
+      tags:
+      - billing
+  /comments:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all submitted comments. Requires permission.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of all comments
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetCommentDTO'
+            type: array
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Failed to fetch comments or register log
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all comments
+      tags:
+      - comments
+    post:
+      consumes:
+      - application/json
+      description: Creates a new comment. Requires permission.
+      parameters:
+      - description: Comment data to create
+        in: body
+        name: comment
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateCommentDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created comment
+          schema:
+            $ref: '#/definitions/dtos.GetCommentDTO'
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Failed to create comment or register log
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a comment
+      tags:
+      - comments
+  /comments/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a comment by its unique ID. Requires permission.
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The retrieved comment
+          schema:
+            $ref: '#/definitions/dtos.GetCommentDTO'
+        "400":
+          description: Invalid comment ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Comment not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving comment or registering log
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get comment by ID
+      tags:
+      - comments
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing comment by ID. Requires permission.
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated comment data
+        in: body
+        name: comment
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateCommentDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated comment
+          schema:
+            $ref: '#/definitions/dtos.GetCommentDTO'
+        "400":
+          description: Invalid ID or request data
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Comment not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error or failed update
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a comment
+      tags:
+      - comments
+  /comments/searchByEmail:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all comments that match the provided email address. Requires
+        permission.
+      parameters:
+      - description: Email address to search comments by
+        in: query
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of matching comments
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetCommentDTO'
+            type: array
+        "400":
+          description: Email parameter is required
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Failed to search comments or register log
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search comments by email
+      tags:
+      - comments
+  /comments/searchByID:
+    get:
+      consumes:
+      - application/json
+      description: Searches for comments using a given ID. Requires appropriate permission.
+      parameters:
+      - description: ID to search for comments
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of comments matching the ID
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetCommentDTO'
+            type: array
+        "400":
+          description: Invalid request parameters
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: No comments found for the given ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error or failure in processing
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search comments by ID
+      tags:
+      - comments
+  /comments/searchByName:
+    get:
+      consumes:
+      - application/json
+      description: Searches for comments using a given name. Requires appropriate
+        permission.
+      parameters:
+      - description: Name to search for comments
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of comments matching the name
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetCommentDTO'
+            type: array
+        "400":
+          description: Invalid request parameters
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: No comments found for the given name
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error or failure in processing
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search comments by name
+      tags:
+      - comments
+  /customers:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all customers from the system. Requires appropriate
+        permission.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of all customers
+          schema:
+            items:
+              $ref: '#/definitions/models.Customer'
+            type: array
+        "400":
+          description: Invalid request parameters
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error or failure in retrieving customers
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Retrieve all customers
+      tags:
+      - customers
+    post:
+      consumes:
+      - application/json
+      description: Creates a new customer record in the system. Requires appropriate
+        permission.
+      parameters:
+      - description: New customer data
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateCustomerDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: The created customer
+          schema:
+            $ref: '#/definitions/models.Customer'
+        "400":
+          description: Invalid input data (JSON format or missing fields)
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error or failure in creating customer
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new customer
+      tags:
+      - customers
+  /customers/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a specific customer from the system based on their ID.
+        Requires appropriate permission.
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Customer data
+          schema:
+            $ref: '#/definitions/models.Customer'
+        "400":
+          description: Invalid customer ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Customer not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error or failure in retrieving customer
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Retrieve a customer by ID
+      tags:
+      - customers
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing customer's data in the system. Requires appropriate
+        permission.
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated customer data
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateCustomerDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The updated customer
+          schema:
+            $ref: '#/definitions/models.Customer'
+        "400":
+          description: Invalid input data (ID format or JSON format)
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Customer not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error or failure in updating customer
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update an existing customer
+      tags:
+      - customers
+  /customers/customerID/{customerID}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a specific customer from the system based on their customerID.
+        Requires appropriate permission.
+      parameters:
+      - description: Customer ID
+        in: path
+        name: customerID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Customer data
+          schema:
+            $ref: '#/definitions/models.Customer'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Customer not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error or failure in retrieving customer
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Retrieve a customer by customerID
+      tags:
+      - customers
+  /customers/email/{email}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a customer record from the system based on their email.
+        Requires appropriate permission.
+      parameters:
+      - description: Customer email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Customer data
+          schema:
+            $ref: '#/definitions/models.Customer'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Customer not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error or failure in retrieving customer
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Retrieve a customer by email
+      tags:
+      - customers
+  /customers/searchByID:
+    get:
+      consumes:
+      - application/json
+      description: Searches for customers based on a query ID. Requires appropriate
+        permission.
+      parameters:
+      - description: Customer ID query
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of customers matching the search
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetCustomerDTO'
+            type: array
+        "400":
+          description: Invalid query or request format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: No customers found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error or failure in retrieving customers
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search customers by ID
+      tags:
+      - customers
+  /customers/searchByLastName:
+    get:
+      consumes:
+      - application/json
+      description: Searches for customers based on a last name query. Requires appropriate
+        permission.
+      parameters:
+      - description: Customer last name query
+        in: query
+        name: lastName
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of customers matching the search
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetCustomerDTO'
+            type: array
+        "400":
+          description: Invalid query or request format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: No customers found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error or failure in retrieving customers
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search customers by last name
+      tags:
+      - customers
+  /customers/searchByName:
+    get:
+      consumes:
+      - application/json
+      description: Searches for customers based on a name query. Requires appropriate
+        permission.
+      parameters:
+      - description: Customer name query
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of customers matching the search
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetCustomerDTO'
+            type: array
+        "400":
+          description: Invalid query or request format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: No customers found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error or failure in retrieving customers
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search customers by name
+      tags:
+      - customers
+  /discount-types:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all available discount types. Requires appropriate permission.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of all discount types
+          schema:
+            items:
+              $ref: '#/definitions/models.DiscountType'
+            type: array
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error or failure in retrieving discount types
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all discount types
+      tags:
+      - discount-types
+    post:
+      consumes:
+      - application/json
+      description: Allows the creation of a new discount type in the system. Requires
+        appropriate permissions.
+      parameters:
+      - description: Discount type details
+        in: body
+        name: discountType
+        required: true
+        schema:
+          $ref: '#/definitions/models.DiscountType'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully created discount type
+          schema:
+            $ref: '#/definitions/models.DiscountType'
+        "400":
+          description: Invalid input data
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error or failure in creating the discount type
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new discount type
+      tags:
+      - discount-types
+  /discount-types/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a specific discount type based on its ID. Requires appropriate
+        permission.
+      parameters:
+      - description: Discount Type ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: The requested discount type
+          schema:
+            $ref: '#/definitions/models.DiscountType'
+        "400":
+          description: Invalid ID format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized or permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Discount type not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error or failure in retrieving discount type
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get a discount type by ID
+      tags:
+      - discount-types
+  /employees:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all employees in the system. Requires the appropriate
+        permissions.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved list of employees
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetEmployeeDTO'
+            type: array
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving employees
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all employees
+      tags:
+      - employees
+    post:
+      consumes:
+      - application/json
+      description: Creates a new employee. The request body must contain the employee
+        details.
+      parameters:
+      - description: Employee information
+        in: body
+        name: employee
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateEmployeeDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully created employee
+          schema:
+            $ref: '#/definitions/dtos.GetEmployeeDTO'
+        "400":
+          description: Invalid JSON format, or missing fields
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "409":
+          description: Employee with this Personal ID already exists
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error creating employee
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new employee
+      tags:
+      - employees
+  /employees/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a specific employee by their unique ID from the system.
+        Requires the appropriate permissions.
+      parameters:
+      - description: Employee ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved employee details
+          schema:
+            $ref: '#/definitions/dtos.GetEmployeeDTO'
+        "400":
+          description: Invalid employee ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Employee not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get employee by ID
+      tags:
+      - employees
+    put:
+      consumes:
+      - application/json
+      description: Updates an employee's details by ID. The request body must contain
+        the updated employee information.
+      parameters:
+      - description: Employee ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated employee information
+        in: body
+        name: employee
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateEmployeeDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully updated employee
+          schema:
+            $ref: '#/definitions/dtos.GetEmployeeDTO'
+        "400":
+          description: Invalid JSON format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Employee not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error updating employee
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update an existing employee
+      tags:
+      - employees
+  /employees/searchByID:
+    get:
+      consumes:
+      - application/json
+      description: Searches for employees by a given ID. Returns a list of employees
+        that match the ID.
+      parameters:
+      - description: Employee ID to search for
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully found employees matching ID
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetEmployeeDTO'
+            type: array
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: No employees found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving employees
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search employees by ID
+      tags:
+      - employees
+  /employees/searchByName:
+    get:
+      consumes:
+      - application/json
+      description: Searches for employees by their name. Returns a list of employees
+        that match the name.
+      parameters:
+      - description: Employee name to search for
+        in: query
+        name: names
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully found employees matching name
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetEmployeeDTO'
+            type: array
+        "400":
+          description: Search query is required
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: No employees found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving employees
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search employees by name
+      tags:
+      - employees
+  /external-sales:
+    get:
+      consumes:
+      - application/json
+      description: Fetches a list of all external sales, including related items and
+        customers.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved all external sales
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetExternalSaleDTO'
+            type: array
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving external sales
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Retrieve all external sales
+      tags:
+      - external-sales
+    post:
+      consumes:
+      - application/json
+      description: Creates a new external sale, including the sale details and customer
+        information.
+      parameters:
+      - description: External Sale data
+        in: body
+        name: external-sale
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateExternalSaleDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully created external sale
+          schema:
+            $ref: '#/definitions/dtos.GetExternalSaleDTO'
+        "400":
+          description: Invalid JSON format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error creating external sale
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new external sale
+      tags:
+      - external-sales
+  /external-sales/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Fetches the details of a specific external sale by its ID.
+      parameters:
+      - description: External Sale ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved external sale
+          schema:
+            $ref: '#/definitions/dtos.GetExternalSaleDTO'
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: External sale not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving external sale
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Retrieve external sale by ID
+      tags:
+      - external-sales
   /health:
     get:
       description: Returns a 200 status if the server is running correctly.
@@ -22,12 +2443,1989 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/models.MessageResponse'
       summary: Health Check
       tags:
       - Health
+  /historical-item-prices/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves the historical prices for an item based on the item ID
+        provided.
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved historical prices
+          schema:
+            items:
+              $ref: '#/definitions/models.HistoricalItemPrice'
+            type: array
+        "400":
+          description: Invalid Item ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: No historical prices found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Failed to retrieve historical prices
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get historical price for an item
+      tags:
+      - historical-item-prices
+  /identifier-types:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all available identifier types.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved identifier types
+          schema:
+            items:
+              $ref: '#/definitions/models.IdentifierType'
+            type: array
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving identifier types
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all identifier types
+      tags:
+      - identifier-types
+  /identifier-types/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves an identifier type by its ID.
+      parameters:
+      - description: Identifier Type ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully retrieved identifier type
+          schema:
+            $ref: '#/definitions/models.IdentifierType'
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Identifier Type not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get identifier type by ID
+      tags:
+      - identifier-types
+  /invoices:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all invoices from the system.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of all invoices
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetInvoiceDTO'
+            type: array
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: No invoices found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all invoices
+      tags:
+      - invoices
+    post:
+      consumes:
+      - application/json
+      description: Create a new invoice based on the provided JSON data. Requires
+        appropriate permissions.
+      parameters:
+      - description: Invoice data
+        in: body
+        name: invoice_body
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateInvoiceDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created invoice
+          schema:
+            $ref: '#/definitions/dtos.GetInvoiceDTO'
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error creating invoice
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new invoice
+      tags:
+      - invoices
+  /invoices/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves an invoice by its unique ID.
+      parameters:
+      - description: Invoice ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Invoice details
+          schema:
+            $ref: '#/definitions/dtos.GetInvoiceDTO'
+        "400":
+          description: Invalid invoice ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Invoice not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get invoice by ID
+      tags:
+      - invoices
+  /invoices/searchById:
+    get:
+      consumes:
+      - application/json
+      description: Search for invoices using a query parameter for the invoice ID.
+      parameters:
+      - description: Invoice ID Query
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of invoices found
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetInvoiceDTO'
+            type: array
+        "400":
+          description: Query parameter is required
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: No invoices found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search invoices by ID
+      tags:
+      - invoices
+  /invoices/searchByPersonalId:
+    get:
+      consumes:
+      - application/json
+      description: Search for invoices using a query parameter for the customer's
+        personal ID.
+      parameters:
+      - description: Customer Personal ID Query
+        in: query
+        name: personal_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of invoices found
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetInvoiceDTO'
+            type: array
+        "400":
+          description: Query parameter 'personal_id' is required
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: No invoices found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search invoices by customer personal ID
+      tags:
+      - invoices
+  /item-types:
+    get:
+      description: Retrieves a list of all item types.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of item types retrieved successfully
+          schema:
+            items:
+              $ref: '#/definitions/models.ItemType'
+            type: array
+        "500":
+          description: Error retrieving item types or registering log
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all item types
+      tags:
+      - item-types
+  /item-types/{id}:
+    get:
+      description: Retrieves the details of a specific item type by its ID.
+      parameters:
+      - description: Item Type ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Item Type retrieved successfully
+          schema:
+            $ref: '#/definitions/models.ItemType'
+        "404":
+          description: Item Type not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error registering log
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get item type by ID
+      tags:
+      - item-types
+  /items:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of all items available in the inventory.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of items
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetItemDTO'
+            type: array
+        "500":
+          description: Error retrieving items
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all items
+      tags:
+      - items
+    post:
+      consumes:
+      - application/json
+      description: Creates a new item with the provided data.
+      parameters:
+      - description: Item to create
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateItemDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Item created successfully
+          schema:
+            $ref: '#/definitions/dtos.GetItemDTO'
+        "400":
+          description: Invalid JSON format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error creating item
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new item
+      tags:
+      - items
+  /items/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve an item by its unique ID from the inventory.
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Item found
+          schema:
+            $ref: '#/definitions/dtos.GetItemDTO'
+        "400":
+          description: Invalid item ID format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Item not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error fetching item
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get item by ID
+      tags:
+      - items
+    put:
+      consumes:
+      - application/json
+      description: Updates the information of an existing item by its ID.
+      parameters:
+      - description: ID of the item to update
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated item data
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateItemDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Item updated successfully
+          schema:
+            $ref: '#/definitions/dtos.GetItemDTO'
+        "400":
+          description: Invalid JSON format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Item not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error updating item
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update an item
+      tags:
+      - items
+  /items/{id}/state:
+    patch:
+      consumes:
+      - application/json
+      description: Updates the state (active/inactive) of an item by its ID.
+      parameters:
+      - description: ID of the item to update
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: New state for the item (true for active, false for inactive)
+        in: body
+        name: item_state
+        required: true
+        schema:
+          type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated item information
+          schema:
+            $ref: '#/definitions/dtos.GetItemDTO'
+        "400":
+          description: Invalid request body
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Item not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error updating item state
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update the state of an item
+      tags:
+      - items
+  /items/{id}/stock:
+    get:
+      consumes:
+      - application/json
+      description: Check if the specified quantity of an item is available in stock.
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Quantity to check
+        in: query
+        name: quantity
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Indicates whether the stock is sufficient or not
+          schema:
+            type: boolean
+        "400":
+          description: Invalid quantity
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error checking stock
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Check item stock availability
+      tags:
+      - items
+  /items/searchById:
+    get:
+      consumes:
+      - application/json
+      description: Search for items in the inventory by their ID using a query parameter.
+      parameters:
+      - description: Item ID to search for
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of items matching the search criteria
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetItemDTO'
+            type: array
+        "400":
+          description: Missing or invalid search query
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: No items found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving items
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search items by ID
+      tags:
+      - items
+  /items/searchByName:
+    get:
+      consumes:
+      - application/json
+      description: Search for items in the inventory by their name using a query parameter.
+      parameters:
+      - description: Item name to search for
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of items matching the search criteria
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetItemDTO'
+            type: array
+        "400":
+          description: Missing or invalid search query
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: No items found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving items
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search items by name
+      tags:
+      - items
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Validates the user's credentials (email and password) for login.
+      parameters:
+      - description: User credentials to validate
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.LoginData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful message
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Invalid email or password
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: User account is not active
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error validating credentials
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Validate user credentials
+      tags:
+      - authentication
+  /order-state-types:
+    get:
+      description: Retrieves a list of all available order state types.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of order state types
+          schema:
+            items:
+              $ref: '#/definitions/models.OrderStateType'
+            type: array
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all order state types
+      tags:
+      - order-state-types
+  /order-state-types/{id}:
+    get:
+      description: Retrieves a specific order state type using its ID.
+      parameters:
+      - description: Order State Type ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Order state type retrieved successfully
+          schema:
+            $ref: '#/definitions/models.OrderStateType'
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Order state type not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get order state type by ID
+      tags:
+      - order-state-types
+  /permissions:
+    get:
+      description: Retrieves a list of all permissions available in the system.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of permissions
+          schema:
+            items:
+              $ref: '#/definitions/models.Permission'
+            type: array
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all permissions
+      tags:
+      - permissions
+  /permissions/{id}:
+    get:
+      description: Retrieves a specific permission by its unique ID.
+      parameters:
+      - description: Permission ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Permission data
+          schema:
+            $ref: '#/definitions/models.Permission'
+        "400":
+          description: Invalid permission ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Permission not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get permission by ID
+      tags:
+      - permissions
+  /permissions/searchByID:
+    get:
+      description: Retrieves a list of permissions that match the given ID pattern.
+      parameters:
+      - description: ID to search for (partial or full match)
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of matching permissions
+          schema:
+            items:
+              $ref: '#/definitions/models.Permission'
+            type: array
+        "400":
+          description: Missing or invalid query parameter
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search permissions by ID
+      tags:
+      - permissions
+  /permissions/searchByName:
+    get:
+      description: Retrieves a list of permissions that match the given name pattern.
+      parameters:
+      - description: Name to search for (partial or full match)
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of matching permissions
+          schema:
+            items:
+              $ref: '#/definitions/models.Permission'
+            type: array
+        "400":
+          description: Missing or invalid query parameter
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Access denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search permissions by name
+      tags:
+      - permissions
+  /purchase-orders:
+    get:
+      description: Retrieves all purchase orders from the system.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of Purchase Orders
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetPurchaseOrderDTO'
+            type: array
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Purchase Orders not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all purchase orders
+      tags:
+      - purchase_orders
+    post:
+      description: Create a new Purchase Order with the provided details and return
+        the created order data.
+      parameters:
+      - description: Purchase Order details
+        in: body
+        name: purchase_order
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreatePurchaseOrderDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created Purchase Order
+          schema:
+            $ref: '#/definitions/dtos.GetPurchaseOrderDTO'
+        "400":
+          description: Invalid request data
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new Purchase Order
+      tags:
+      - purchase_orders
+  /purchase-orders/{id}:
+    get:
+      description: Retrieves the details of a purchase order based on the provided
+        ID.
+      parameters:
+      - description: Purchase Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Purchase Order details
+          schema:
+            $ref: '#/definitions/dtos.GetPurchaseOrderDTO'
+        "400":
+          description: Invalid ID format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Purchase Order not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get purchase order by ID
+      tags:
+      - purchase_orders
+  /purchase-orders/{id}/state:
+    patch:
+      description: Update the state of a specific Purchase Order based on its ID.
+      parameters:
+      - description: Purchase Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Order State ID
+        in: body
+        name: order_state_id
+        required: true
+        schema:
+          type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated Purchase Order and associated Invoice
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Invalid request body
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Purchase Order not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Change the state of a Purchase Order
+      tags:
+      - purchase_orders
+  /purchase-orders/customers/{customerID}:
+    get:
+      description: Retrieve all Purchase Orders associated with a specific Customer
+        ID.
+      parameters:
+      - description: Customer ID
+        in: path
+        name: customerID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of Purchase Orders for the specified Customer ID
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetPurchaseOrderDTO'
+            type: array
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Purchase Orders not found for the specified Customer ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Purchase Orders by Customer ID
+      tags:
+      - purchase_orders
+  /purchase-orders/searchByID:
+    get:
+      description: Search for Purchase Orders based on a given ID query parameter.
+      parameters:
+      - description: Purchase Order ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of Purchase Orders
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetPurchaseOrderDTO'
+            type: array
+        "400":
+          description: Missing 'id' query parameter
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Purchase Orders not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search Purchase Orders by ID
+      tags:
+      - purchase_orders
+  /purchase-orders/seller/{sellerID}:
+    get:
+      description: Retrieve all Purchase Orders associated with a specific Seller
+        ID.
+      parameters:
+      - description: Seller ID
+        in: path
+        name: sellerID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of Purchase Orders for the specified Seller ID
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetPurchaseOrderDTO'
+            type: array
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Purchase Orders not found for the specified Seller ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Purchase Orders by Seller ID
+      tags:
+      - purchase_orders
+  /purchase-orders/state/{stateID}:
+    get:
+      description: Retrieves all purchase orders that match the given state ID.
+      parameters:
+      - description: State ID
+        in: path
+        name: stateID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of Purchase Orders
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetPurchaseOrderDTO'
+            type: array
+        "400":
+          description: Invalid State ID format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Purchase Orders not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get purchase orders by state ID
+      tags:
+      - purchase_orders
+  /roles:
+    get:
+      description: Retrieve a list of all roles, including their associated permissions.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of roles with permissions
+          schema:
+            items:
+              $ref: '#/definitions/dtos.RoleDTO'
+            type: array
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving roles
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all roles
+      tags:
+      - roles
+  /roles/{id}:
+    get:
+      description: Retrieve a role's details by its ID, including its permissions.
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Role details with permissions
+          schema:
+            $ref: '#/definitions/dtos.RoleDTO'
+        "400":
+          description: Invalid role ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Role not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get a role by ID
+      tags:
+      - roles
+  /roles/{id}/exist:
+    get:
+      description: Check whether a role exists in the system by its ID.
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns a boolean indicating if the role exists
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Invalid role ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error checking role existence
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Check if a role exists
+      tags:
+      - roles
+  /roles/{id}/permission:
+    get:
+      description: Retrieve all permissions assigned to a specific role by its ID.
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of permissions for the role
+          schema:
+            items:
+              type: string
+            type: array
+        "400":
+          description: Invalid role ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving permissions for role
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all permissions of a specific role
+      tags:
+      - roles
+  /roles/searchByID:
+    get:
+      description: Search for roles using a partial or full role ID.
+      parameters:
+      - description: Role ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns the roles matching the search criteria
+          schema:
+            items:
+              $ref: '#/definitions/models.Role'
+            type: array
+        "400":
+          description: Invalid query parameter
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error searching roles by ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search roles by ID
+      tags:
+      - roles
+  /roles/searchByName:
+    get:
+      description: Search for roles using a partial or full role name.
+      parameters:
+      - description: Role Name
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Returns the roles matching the search criteria
+          schema:
+            items:
+              $ref: '#/definitions/models.Role'
+            type: array
+        "400":
+          description: Invalid query parameter
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error searching roles by name
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search roles by name
+      tags:
+      - roles
+  /sales-report/invoices:
+    get:
+      description: Retrieve invoices that were generated between the given start and
+        end dates.
+      parameters:
+      - description: Start Date (RFC3339 format)
+        in: query
+        name: startDate
+        required: true
+        type: string
+      - description: End Date (RFC3339 format)
+        in: query
+        name: endDate
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of invoices between the given dates
+          schema:
+            items:
+              $ref: '#/definitions/dtos.SalesReportInvoiceDTO'
+            type: array
+        "400":
+          description: Invalid date format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error fetching invoices
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Fetch invoices between specified dates
+      tags:
+      - sales-report
+  /tax-types:
+    get:
+      description: Fetches the list of all available tax types.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of tax types
+          schema:
+            items:
+              $ref: '#/definitions/models.TaxType'
+            type: array
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving tax types
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Retrieve all tax types
+      tags:
+      - tax-types
+    post:
+      consumes:
+      - application/json
+      description: Creates a new tax type by providing its details (name, percentage,
+        etc).
+      parameters:
+      - description: Tax Type Details
+        in: body
+        name: tax
+        required: true
+        schema:
+          $ref: '#/definitions/models.TaxType'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully created tax type
+          schema:
+            $ref: '#/definitions/models.TaxType'
+        "400":
+          description: Invalid input data
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error creating tax type
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new tax type
+      tags:
+      - tax-types
+  /tax-types/{id}:
+    get:
+      description: Fetches the details of a tax type specified by the provided ID.
+      parameters:
+      - description: Tax Type ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Details of the tax type
+          schema:
+            $ref: '#/definitions/models.TaxType'
+        "400":
+          description: Invalid ID format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Tax type not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Retrieve a tax type by its ID
+      tags:
+      - tax-types
+  /user-state-types:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all user state types available in the system.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of User State Types
+          schema:
+            items:
+              $ref: '#/definitions/models.UserStateType'
+            type: array
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all user state types
+      tags:
+      - user_state_types
+  /user-state-types/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a user state type by its unique ID.
+      parameters:
+      - description: User State Type ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User State Type details
+          schema:
+            $ref: '#/definitions/models.UserStateType'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: User State Type not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get user state type by ID
+      tags:
+      - user_state_types
+  /user-types:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all user types along with their associated
+        roles.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of user types
+          schema:
+            items:
+              $ref: '#/definitions/dtos.UserTypeDTO'
+            type: array
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving user types
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all user types
+      tags:
+      - user_types
+  /user-types/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a user type based on the provided user type ID.
+      parameters:
+      - description: User Type ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User type information
+          schema:
+            $ref: '#/definitions/dtos.UserTypeDTO'
+        "400":
+          description: Invalid user type ID format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: User type not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get user type by ID
+      tags:
+      - user_types
+  /user-types/{id}/exists:
+    get:
+      consumes:
+      - application/json
+      description: Checks if a user type exists based on the provided user type ID.
+      parameters:
+      - description: User Type ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Existence status of the user type
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Invalid user type ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error checking user type existence
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Check if a user type exists
+      tags:
+      - user_types
+  /user-types/searchByID:
+    get:
+      consumes:
+      - application/json
+      description: Searches for user types based on the provided user type ID query.
+      parameters:
+      - description: User Type ID Query
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of user types matching the ID query
+          schema:
+            items:
+              $ref: '#/definitions/dtos.UserTypeDTO'
+            type: array
+        "400":
+          description: Invalid query parameter
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error searching user types
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search user types by ID
+      tags:
+      - user_types
+  /user-types/searchByName:
+    get:
+      consumes:
+      - application/json
+      description: Searches for user types based on the provided user type name query.
+      parameters:
+      - description: User Type Name Query
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of user types matching the name query
+          schema:
+            items:
+              $ref: '#/definitions/dtos.UserTypeDTO'
+            type: array
+        "400":
+          description: Invalid query parameter
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error searching user types
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search user types by name
+      tags:
+      - user_types
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all users in the system.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of users
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetUserDTO'
+            type: array
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Users not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving users
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all users
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user with the provided email, password, user type,
+        and state.
+      parameters:
+      - description: User details to create
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.CreateUserDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created user information
+          schema:
+            $ref: '#/definitions/dtos.GetUserDTO'
+        "400":
+          description: Invalid request body
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "409":
+          description: Email already in use
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error creating user
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new user
+      tags:
+      - users
+  /users/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a user by their ID. Returns user details if found, otherwise
+        returns an error.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User details
+          schema:
+            $ref: '#/definitions/dtos.GetUserDTO'
+        "400":
+          description: Invalid ID format
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error retrieving user
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get a user by ID
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Updates user details such as email, password, user type, and state.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User details to update
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.UpdateUserDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated user information
+          schema:
+            $ref: '#/definitions/dtos.GetUserDTO'
+        "400":
+          description: Invalid request body
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error updating user information
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update user information
+      tags:
+      - users
+  /users/{id}/state:
+    patch:
+      consumes:
+      - application/json
+      description: Updates the state of a user based on the provided user ID and state
+        value.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User state to update
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.request'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated user information
+          schema:
+            $ref: '#/definitions/dtos.GetUserDTO'
+        "400":
+          description: Invalid request body
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error updating user state
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update user state
+      tags:
+      - users
+  /users/searchByEmail:
+    get:
+      consumes:
+      - application/json
+      description: Searches for users by email based on the provided query parameter.
+      parameters:
+      - description: User email to search
+        in: query
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of users matching the search criteria
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetUserDTO'
+            type: array
+        "400":
+          description: Query parameter is required
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Users not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error searching users
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search users by email
+      tags:
+      - users
+  /users/searchByID:
+    get:
+      consumes:
+      - application/json
+      description: Searches for users by ID based on the provided query parameter.
+      parameters:
+      - description: User ID to search
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of users matching the search criteria
+          schema:
+            items:
+              $ref: '#/definitions/dtos.GetUserDTO'
+            type: array
+        "400":
+          description: Query parameter is required
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Permission denied
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Users not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Error searching users
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Search users by ID
+      tags:
+      - users
 schemes:
 - http
 - https

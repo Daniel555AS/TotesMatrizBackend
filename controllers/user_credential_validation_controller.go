@@ -19,16 +19,33 @@ func NewUserCredentialValidationController(service *services.UserCredentialValid
 	return &UserCredentialValidationController{Service: service, Auth: auth, Log: log}
 }
 
+// LoginData defines the structure for user login request
+type LoginData struct {
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required"`
+}
+
+// ValidateUserCredentials godoc
+// @Summary      Validate user credentials
+// @Description  Validates the user's credentials (email and password) for login.
+// @Tags         authentication
+// @Accept       json
+// @Produce      json
+// @Param        body    body     LoginData  true  "User credentials to validate"
+// @Success      200     {object}   models.MessageResponse "Login successful message"
+// @Failure      400     {object}  models.ErrorResponse  "Invalid request body"
+// @Failure      403     {object}  models.ErrorResponse  "User account is not active"
+// @Failure      401     {object}  models.ErrorResponse  "Invalid email or password"
+// @Failure      500     {object}  models.ErrorResponse  "Error validating credentials"
+// @Security     ApiKeyAuth
+// @Router       /login [post]
 func (ucvc *UserCredentialValidationController) ValidateUserCredentials(c *gin.Context) {
 	if ucvc.Log.RegisterLog(c, "Attempting user login") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
 		return
 	}
 
-	var loginData struct {
-		Email    string `json:"email" binding:"required,email"`
-		Password string `json:"password" binding:"required"`
-	}
+	var loginData LoginData
 
 	if err := c.ShouldBindJSON(&loginData); err != nil {
 		_ = ucvc.Log.RegisterLog(c, "Invalid request body for login")

@@ -21,6 +21,19 @@ func NewRoleController(service *services.RoleService, auth *utilities.Authorizat
 	return &RoleController{Service: service, Auth: auth, Log: log}
 }
 
+// GetRoleByID godoc
+// @Summary      Get a role by ID
+// @Description  Retrieve a role's details by its ID, including its permissions.
+// @Tags         roles
+// @Produce      json
+// @Param        id  path     int  true  "Role ID"
+// @Success      200  {object}  dtos.RoleDTO  "Role details with permissions"
+// @Failure      400  {object}  models.ErrorResponse  "Invalid role ID"
+// @Failure      403  {object}  models.ErrorResponse  "Permission denied"
+// @Failure      404  {object}  models.ErrorResponse  "Role not found"
+// @Failure      500  {object}  models.ErrorResponse  "Internal server error"
+// @Security     ApiKeyAuth
+// @Router       /roles/{id} [get]
 func (rc *RoleController) GetRoleByID(c *gin.Context) {
 	permissionId := config.PERMISSION_GET_ROLE_BY_ID
 
@@ -72,6 +85,16 @@ func (rc *RoleController) GetRoleByID(c *gin.Context) {
 	c.JSON(http.StatusOK, roleDTO)
 }
 
+// GetAllRoles godoc
+// @Summary      Get all roles
+// @Description  Retrieve a list of all roles, including their associated permissions.
+// @Tags         roles
+// @Produce      json
+// @Success      200  {array}  dtos.RoleDTO  "List of roles with permissions"
+// @Failure      403  {object}  models.ErrorResponse  "Permission denied"
+// @Failure      500  {object}  models.ErrorResponse  "Error retrieving roles"
+// @Security     ApiKeyAuth
+// @Router       /roles [get]
 func (rc *RoleController) GetAllRoles(c *gin.Context) {
 	permissionId := config.PERMISSION_GET_ALL_ROLES
 
@@ -119,6 +142,18 @@ func (rc *RoleController) GetAllRoles(c *gin.Context) {
 	c.JSON(http.StatusOK, rolesDTO)
 }
 
+// GetAllPermissionsOfRole godoc
+// @Summary      Get all permissions of a specific role
+// @Description  Retrieve all permissions assigned to a specific role by its ID.
+// @Tags         roles
+// @Produce      json
+// @Param        id  path  int  true  "Role ID"
+// @Success      200  {array}  string  "List of permissions for the role"
+// @Failure      400  {object}  models.ErrorResponse  "Invalid role ID"
+// @Failure      403  {object}  models.ErrorResponse  "Permission denied"
+// @Failure      500  {object}  models.ErrorResponse  "Error retrieving permissions for role"
+// @Security     ApiKeyAuth
+// @Router       /roles/{id}/permission [get]
 func (rc *RoleController) GetAllPermissionsOfRole(c *gin.Context) {
 	permissionId := config.PERMISSION_GET_ALL_PERMISSIONS_OF_ROLE
 
@@ -152,6 +187,18 @@ func (rc *RoleController) GetAllPermissionsOfRole(c *gin.Context) {
 	c.JSON(http.StatusOK, permissions)
 }
 
+// ExistRole godoc
+// @Summary      Check if a role exists
+// @Description  Check whether a role exists in the system by its ID.
+// @Tags         roles
+// @Produce      json
+// @Param        id  path  int  true  "Role ID"
+// @Success      200  {object}  models.MessageResponse  "Returns a boolean indicating if the role exists"
+// @Failure      400  {object}  models.ErrorResponse  "Invalid role ID"
+// @Failure      403  {object}  models.ErrorResponse  "Permission denied"
+// @Failure      500  {object}  models.ErrorResponse  "Error checking role existence"
+// @Security     ApiKeyAuth
+// @Router       /roles/{id}/exist [get]
 func (rc *RoleController) ExistRole(c *gin.Context) {
 	permissionId := config.PERMISSION_EXIST_ROLE
 
@@ -185,6 +232,18 @@ func (rc *RoleController) ExistRole(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"exists": exists})
 }
 
+// SearchRolesByID godoc
+// @Summary      Search roles by ID
+// @Description  Search for roles using a partial or full role ID.
+// @Tags         roles
+// @Produce      json
+// @Param        id  query  string  true  "Role ID"
+// @Success      200  {array}  models.Role  "Returns the roles matching the search criteria"
+// @Failure      400  {object}  models.ErrorResponse  "Invalid query parameter"
+// @Failure      403  {object}  models.ErrorResponse  "Permission denied"
+// @Failure      500  {object}  models.ErrorResponse  "Error searching roles by ID"
+// @Security     ApiKeyAuth
+// @Router       /roles/searchByID [get]
 func (rc *RoleController) SearchRolesByID(c *gin.Context) {
 	permissionId := config.PERMISSION_SEARCH_ROLE_BY_ID
 
@@ -211,6 +270,18 @@ func (rc *RoleController) SearchRolesByID(c *gin.Context) {
 	c.JSON(http.StatusOK, roles)
 }
 
+// SearchRolesByName godoc
+// @Summary      Search roles by name
+// @Description  Search for roles using a partial or full role name.
+// @Tags         roles
+// @Produce      json
+// @Param        name  query  string  true  "Role Name"
+// @Success      200  {array}  models.Role  "Returns the roles matching the search criteria"
+// @Failure      400  {object}  models.ErrorResponse  "Invalid query parameter"
+// @Failure      403  {object}  models.ErrorResponse  "Permission denied"
+// @Failure      500  {object}  models.ErrorResponse  "Error searching roles by name"
+// @Security     ApiKeyAuth
+// @Router       /roles/searchByName [get]
 func (rc *RoleController) SearchRolesByName(c *gin.Context) {
 	permissionId := config.PERMISSION_SEARCH_ROLE_BY_NAME
 

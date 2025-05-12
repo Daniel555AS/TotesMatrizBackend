@@ -24,6 +24,18 @@ func NewAdditionalExpenseController(service *services.AdditionalExpenseService,
 	return &AdditionalExpenseController{Service: service, Auth: auth, Log: log}
 }
 
+// GetAdditionalExpenseByID godoc
+// @Summary      Get additional expense by ID
+// @Description  Retrieves an additional expense record by its ID. Requires permission to view additional expenses by ID.
+// @Tags         additional-expenses
+// @Accept       json
+// @Produce      json
+// @Param        id   path      string                   true  "ID of the additional expense"
+// @Success      200  {object}  models.AdditionalExpense "The additional expense record"
+// @Failure      401  {object}  models.ErrorResponse      "Unauthorized or permission denied"
+// @Failure      404  {object}  models.ErrorResponse      "Additional expense not found"
+// @Failure      500  {object}  models.ErrorResponse      "Internal server error (log registration or DB error)"
+// @Router       /additional-expenses/{id} [get]
 func (aec *AdditionalExpenseController) GetAdditionalExpenseByID(c *gin.Context) {
 	idParam := c.Param("id")
 
@@ -56,6 +68,17 @@ func (aec *AdditionalExpenseController) GetAdditionalExpenseByID(c *gin.Context)
 	c.JSON(http.StatusOK, additionalExpense)
 }
 
+// GetAllAdditionalExpenses godoc
+// @Summary      Get all additional expenses
+// @Description  Retrieves all additional expense records. Requires permission to view all additional expenses.
+// @Tags         additional-expenses
+// @Accept       json
+// @Produce      json
+// @Success      200  {array}   models.AdditionalExpense   "A list of all additional expenses"
+// @Failure      401  {object}  models.ErrorResponse       "Unauthorized or permission denied"
+// @Failure      500  {object}  models.ErrorResponse       "Error retrieving additional expenses"
+// @Security     ApiKeyAuth
+// @Router       /additional-expenses [get]
 func (aec *AdditionalExpenseController) GetAllAdditionalExpenses(c *gin.Context) {
 	if aec.Log.RegisterLog(c, "Attempting to retrieve all AdditionalExpenses") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -81,6 +104,19 @@ func (aec *AdditionalExpenseController) GetAllAdditionalExpenses(c *gin.Context)
 	c.JSON(http.StatusOK, additionalExpenses)
 }
 
+// CreateAdditionalExpense godoc
+// @Summary      Create a new additional expense
+// @Description  Creates a new additional expense record. Requires permission to create an additional expense.
+// @Tags         additional-expenses
+// @Accept       json
+// @Produce      json
+// @Param        expense  body      dtos.UpdateAdditionalExpenseDTO  true  "Additional Expense DTO"
+// @Success      201      {object}  models.AdditionalExpense         "The created additional expense"
+// @Failure      400      {object}  models.ErrorResponse             "Invalid JSON format"
+// @Failure      401      {object}  models.ErrorResponse             "Unauthorized or permission denied"
+// @Failure      500      {object}  models.ErrorResponse             "Error creating additional expense"
+// @Security     ApiKeyAuth
+// @Router       /additional-expenses [post]
 func (aec *AdditionalExpenseController) CreateAdditionalExpense(c *gin.Context) {
 	if aec.Log.RegisterLog(c, "Attempting to create a new AdditionalExpense") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -120,6 +156,20 @@ func (aec *AdditionalExpenseController) CreateAdditionalExpense(c *gin.Context) 
 	c.JSON(http.StatusCreated, createdExpense)
 }
 
+// DeleteAdditionalExpense godoc
+// @Summary      Delete an additional expense by ID
+// @Description  Deletes an additional expense record by its ID. Requires permission to delete an additional expense.
+// @Tags         additional-expenses
+// @Accept       json
+// @Produce      json
+// @Param        id    path      string                  true  "Additional Expense ID"
+// @Success      200   {object}  models.MessageResponse       "Message indicating successful deletion"
+// @Failure      400   {object}  models.ErrorResponse    "Invalid ID format or request"
+// @Failure      401   {object}  models.ErrorResponse    "Unauthorized or permission denied"
+// @Failure      404   {object}  models.ErrorResponse    "Additional expense not found"
+// @Failure      500   {object}  models.ErrorResponse    "Error deleting additional expense"
+// @Security     ApiKeyAuth
+// @Router       /additional-expenses/{id} [delete]
 func (aec *AdditionalExpenseController) DeleteAdditionalExpense(c *gin.Context) {
 	id := c.Param("id")
 
@@ -152,6 +202,21 @@ func (aec *AdditionalExpenseController) DeleteAdditionalExpense(c *gin.Context) 
 	c.JSON(http.StatusOK, gin.H{"message": "Additional Expense deleted successfully"})
 }
 
+// UpdateAdditionalExpense godoc
+// @Summary      Update an additional expense by ID
+// @Description  Updates the details of an existing additional expense identified by its ID. Requires permission to update an additional expense.
+// @Tags         additional-expenses
+// @Accept       json
+// @Produce      json
+// @Param        id    path      string                            true  "Additional Expense ID"
+// @Param        body  body      dtos.UpdateAdditionalExpenseDTO   true  "Updated Additional Expense details"
+// @Success      200   {object}  models.AdditionalExpense           "The updated additional expense"
+// @Failure      400   {object}  models.ErrorResponse               "Invalid request or JSON format"
+// @Failure      401   {object}  models.ErrorResponse               "Unauthorized or permission denied"
+// @Failure      404   {object}  models.ErrorResponse               "Additional expense not found"
+// @Failure      500   {object}  models.ErrorResponse               "Internal server error"
+// @Security     ApiKeyAuth
+// @Router       /additional-expenses/{id} [put]
 func (aec *AdditionalExpenseController) UpdateAdditionalExpense(c *gin.Context) {
 	id := c.Param("id")
 

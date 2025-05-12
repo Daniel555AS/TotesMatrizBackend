@@ -23,6 +23,19 @@ func NewHistoricalItemPriceController(service *services.HistoricalItemPriceServi
 	}
 }
 
+// GetHistoricalItemPrice godoc
+// @Summary      Get historical price for an item
+// @Description  Retrieves the historical prices for an item based on the item ID provided.
+// @Tags         historical-item-prices
+// @Accept       json
+// @Produce      json
+// @Param        id path string true "Item ID"
+// @Success      200 {array} models.HistoricalItemPrice "Successfully retrieved historical prices"
+// @Failure      400 {object} models.ErrorResponse "Invalid Item ID"
+// @Failure      500 {object} models.ErrorResponse "Failed to retrieve historical prices"
+// @Failure      404 {object} models.ErrorResponse "No historical prices found"
+// @Security     ApiKeyAuth
+// @Router       /historical-item-prices/{id} [get]
 func (c *HistoricalItemPriceController) GetHistoricalItemPrice(ctx *gin.Context) {
 	itemID := ctx.Param("id")
 

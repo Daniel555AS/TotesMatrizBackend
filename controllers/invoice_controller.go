@@ -27,6 +27,17 @@ func NewInvoiceController(
 	}
 }
 
+// GetAllInvoices godoc
+// @Summary      Get all invoices
+// @Description  Retrieves all invoices from the system.
+// @Tags         invoices
+// @Accept       json
+// @Produce      json
+// @Success      200 {array} dtos.GetInvoiceDTO "List of all invoices"
+// @Failure      404 {object} models.ErrorResponse "No invoices found"
+// @Failure      403 {object} models.ErrorResponse "Access denied"
+// @Security     ApiKeyAuth
+// @Router       /invoices [get]
 func (ic *InvoiceController) GetAllInvoices(c *gin.Context) {
 	if ic.Log.RegisterLog(c, "Attempting to retrieve all invoices") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -71,6 +82,19 @@ func (ic *InvoiceController) GetAllInvoices(c *gin.Context) {
 	c.JSON(http.StatusOK, invoiceDTOs)
 }
 
+// GetInvoiceByID godoc
+// @Summary      Get invoice by ID
+// @Description  Retrieves an invoice by its unique ID.
+// @Tags         invoices
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "Invoice ID"
+// @Success      200 {object} dtos.GetInvoiceDTO "Invoice details"
+// @Failure      400 {object} models.ErrorResponse "Invalid invoice ID"
+// @Failure      404 {object} models.ErrorResponse "Invoice not found"
+// @Failure      403 {object} models.ErrorResponse "Access denied"
+// @Security     ApiKeyAuth
+// @Router       /invoices/{id} [get]
 func (ic *InvoiceController) GetInvoiceByID(c *gin.Context) {
 	idParam := c.Param("id")
 	if ic.Log.RegisterLog(c, "Attempting to retrieve invoice with ID: "+idParam) != nil {
@@ -114,6 +138,19 @@ func (ic *InvoiceController) GetInvoiceByID(c *gin.Context) {
 	c.JSON(http.StatusOK, invoiceDTO)
 }
 
+// SearchInvoiceByID godoc
+// @Summary      Search invoices by ID
+// @Description  Search for invoices using a query parameter for the invoice ID.
+// @Tags         invoices
+// @Accept       json
+// @Produce      json
+// @Param        id   query     string  true  "Invoice ID Query"
+// @Success      200 {array} dtos.GetInvoiceDTO "List of invoices found"
+// @Failure      400 {object} models.ErrorResponse "Query parameter is required"
+// @Failure      404 {object} models.ErrorResponse "No invoices found"
+// @Failure      403 {object} models.ErrorResponse "Access denied"
+// @Security     ApiKeyAuth
+// @Router       /invoices/searchById [get]
 func (ic *InvoiceController) SearchInvoiceByID(c *gin.Context) {
 	query := c.Query("id")
 
@@ -160,6 +197,19 @@ func (ic *InvoiceController) SearchInvoiceByID(c *gin.Context) {
 	c.JSON(http.StatusOK, invoiceDTOs)
 }
 
+// SearchInvoiceByCustomerPersonalId godoc
+// @Summary      Search invoices by customer personal ID
+// @Description  Search for invoices using a query parameter for the customer's personal ID.
+// @Tags         invoices
+// @Accept       json
+// @Produce      json
+// @Param        personal_id   query     string  true  "Customer Personal ID Query"
+// @Success      200 {array} dtos.GetInvoiceDTO "List of invoices found"
+// @Failure      400 {object} models.ErrorResponse "Query parameter 'personal_id' is required"
+// @Failure      404 {object} models.ErrorResponse "No invoices found"
+// @Failure      403 {object} models.ErrorResponse "Access denied"
+// @Security     ApiKeyAuth
+// @Router       /invoices/searchByPersonalId [get]
 func (ic *InvoiceController) SearchInvoiceByCustomerPersonalId(c *gin.Context) {
 	query := c.Query("personal_id")
 
@@ -206,6 +256,19 @@ func (ic *InvoiceController) SearchInvoiceByCustomerPersonalId(c *gin.Context) {
 	c.JSON(http.StatusOK, invoiceDTOs)
 }
 
+// CreateInvoice godoc
+// @Summary      Create a new invoice
+// @Description  Create a new invoice based on the provided JSON data. Requires appropriate permissions.
+// @Tags         invoices
+// @Accept       json
+// @Produce      json
+// @Param        invoice_body  body      dtos.CreateInvoiceDTO  true  "Invoice data"
+// @Success      201 {object} dtos.GetInvoiceDTO "Created invoice"
+// @Failure      400 {object} models.ErrorResponse "Invalid request data"
+// @Failure      403 {object} models.ErrorResponse "Access denied"
+// @Failure      500 {object} models.ErrorResponse "Error creating invoice"
+// @Security     ApiKeyAuth
+// @Router       /invoices [post]
 func (ic *InvoiceController) CreateInvoice(c *gin.Context) {
 	if ic.Log.RegisterLog(c, "Attempting to create new invoice") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})

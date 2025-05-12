@@ -19,6 +19,18 @@ func NewAuthorizationController(service *services.AuthorizationService, log *uti
 	return &AuthorizationController{Service: service, Log: log}
 }
 
+// CheckUserPermission godoc
+// @Summary      Check if a user has a specific permission
+// @Description  Verifies if the user with the provided email has the specified permission ID
+// @Tags         authorization
+// @Accept       json
+// @Produce      json
+// @Param        email       query     string  true  "User's email address"
+// @Param        permission_id  query  string  true  "Permission ID to check"
+// @Success      200        {object}  models.MessageResponse   "Response with the permission status"
+// @Failure      400        {object}  models.ErrorResponse   "Invalid or missing parameters"
+// @Failure      500        {object}  models.ErrorResponse   "Error checking permission"
+// @Router       /auth/check-permission [get]
 func (ac *AuthorizationController) CheckUserPermission(c *gin.Context) {
 	email := c.Query("email")
 	permissionID := c.Query("permission_id")

@@ -20,6 +20,19 @@ func NewPermissionController(service *services.PermissionService, auth *utilitie
 	return &PermissionController{Service: service, Auth: auth, Log: log}
 }
 
+// GetPermissionByID godoc
+// @Summary      Get permission by ID
+// @Description  Retrieves a specific permission by its unique ID.
+// @Tags         permissions
+// @Produce      json
+// @Param        id   path      int                           true  "Permission ID"
+// @Success      200  {object}  models.Permission             "Permission data"
+// @Failure      400  {object}  models.ErrorResponse          "Invalid permission ID"
+// @Failure      403  {object}  models.ErrorResponse          "Access denied"
+// @Failure      404  {object}  models.ErrorResponse          "Permission not found"
+// @Failure      500  {object}  models.ErrorResponse          "Internal server error"
+// @Security     ApiKeyAuth
+// @Router       /permissions/{id} [get]
 func (pc *PermissionController) GetPermissionByID(c *gin.Context) {
 	permissionId := config.PERMISSION_GET_PERMISSION_BY_ID
 
@@ -65,6 +78,16 @@ func (pc *PermissionController) GetPermissionByID(c *gin.Context) {
 	c.JSON(http.StatusOK, permission)
 }
 
+// GetAllPermissions godoc
+// @Summary      Get all permissions
+// @Description  Retrieves a list of all permissions available in the system.
+// @Tags         permissions
+// @Produce      json
+// @Success      200  {array}   models.Permission             "List of permissions"
+// @Failure      403  {object}  models.ErrorResponse          "Access denied"
+// @Failure      500  {object}  models.ErrorResponse          "Internal server error"
+// @Security     ApiKeyAuth
+// @Router       /permissions [get]
 func (pc *PermissionController) GetAllPermissions(c *gin.Context) {
 	permissionId := config.PERMISSION_GET_ALL_PERMISSIONS
 
@@ -99,6 +122,18 @@ func (pc *PermissionController) GetAllPermissions(c *gin.Context) {
 	c.JSON(http.StatusOK, permissions)
 }
 
+// SearchPermissionsByID godoc
+// @Summary      Search permissions by ID
+// @Description  Retrieves a list of permissions that match the given ID pattern.
+// @Tags         permissions
+// @Produce      json
+// @Param        id   query     string  true  "ID to search for (partial or full match)"
+// @Success      200  {array}   models.Permission             "List of matching permissions"
+// @Failure      400  {object}  models.ErrorResponse          "Missing or invalid query parameter"
+// @Failure      403  {object}  models.ErrorResponse          "Access denied"
+// @Failure      500  {object}  models.ErrorResponse          "Internal server error"
+// @Security     ApiKeyAuth
+// @Router       /permissions/searchByID [get]
 func (pc *PermissionController) SearchPermissionsByID(c *gin.Context) {
 	permissionId := config.PERMISSION_SEARCH_PERMISSION_BY_ID
 
@@ -143,6 +178,18 @@ func (pc *PermissionController) SearchPermissionsByID(c *gin.Context) {
 	c.JSON(http.StatusOK, permissions)
 }
 
+// SearchPermissionsByName godoc
+// @Summary      Search permissions by name
+// @Description  Retrieves a list of permissions that match the given name pattern.
+// @Tags         permissions
+// @Produce      json
+// @Param        name   query     string  true  "Name to search for (partial or full match)"
+// @Success      200    {array}   models.Permission             "List of matching permissions"
+// @Failure      400    {object}  models.ErrorResponse          "Missing or invalid query parameter"
+// @Failure      403    {object}  models.ErrorResponse          "Access denied"
+// @Failure      500    {object}  models.ErrorResponse          "Internal server error"
+// @Security     ApiKeyAuth
+// @Router       /permissions/searchByName [get]
 func (pc *PermissionController) SearchPermissionsByName(c *gin.Context) {
 	permissionId := config.PERMISSION_SEARCH_PERMISSION_BY_NAME
 

@@ -23,6 +23,18 @@ func NewCustomerController(service *services.CustomerService, auth *utilities.Au
 	return &CustomerController{Service: service, Auth: auth, Log: log}
 }
 
+// GetAllCustomers godoc
+// @Summary      Retrieve all customers
+// @Description  Retrieves a list of all customers from the system. Requires appropriate permission.
+// @Tags         customers
+// @Accept       json
+// @Produce      json
+// @Success      200      {array}   models.Customer         "List of all customers"
+// @Failure      400      {object}  models.ErrorResponse    "Invalid request parameters"
+// @Failure      401      {object}  models.ErrorResponse    "Unauthorized or permission denied"
+// @Failure      500      {object}  models.ErrorResponse    "Internal server error or failure in retrieving customers"
+// @Security     ApiKeyAuth
+// @Router       /customers [get]
 func (cc *CustomerController) GetAllCustomers(c *gin.Context) {
 	if cc.Log.RegisterLog(c, "Attempting to retrieve all customers") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -46,6 +58,20 @@ func (cc *CustomerController) GetAllCustomers(c *gin.Context) {
 	c.JSON(http.StatusOK, customers)
 }
 
+// GetCustomerByID godoc
+// @Summary      Retrieve a customer by ID
+// @Description  Retrieves a specific customer from the system based on their ID. Requires appropriate permission.
+// @Tags         customers
+// @Accept       json
+// @Produce      json
+// @Param        id       path      int                  true  "Customer ID"
+// @Success      200      {object}  models.Customer      "Customer data"
+// @Failure      400      {object}  models.ErrorResponse "Invalid customer ID"
+// @Failure      401      {object}  models.ErrorResponse "Unauthorized or permission denied"
+// @Failure      404      {object}  models.ErrorResponse "Customer not found"
+// @Failure      500      {object}  models.ErrorResponse "Internal server error or failure in retrieving customer"
+// @Security     ApiKeyAuth
+// @Router       /customers/{id} [get]
 func (cc *CustomerController) GetCustomerByID(c *gin.Context) {
 	idParam := c.Param("id")
 	if cc.Log.RegisterLog(c, "Attempting to retrieve customer with ID: "+idParam) != nil {
@@ -77,6 +103,19 @@ func (cc *CustomerController) GetCustomerByID(c *gin.Context) {
 	c.JSON(http.StatusOK, customer)
 }
 
+// GetCustomerByCustomerID godoc
+// @Summary      Retrieve a customer by customerID
+// @Description  Retrieves a specific customer from the system based on their customerID. Requires appropriate permission.
+// @Tags         customers
+// @Accept       json
+// @Produce      json
+// @Param        customerID   path      string               true  "Customer ID"
+// @Success      200          {object}  models.Customer      "Customer data"
+// @Failure      401          {object}  models.ErrorResponse "Unauthorized or permission denied"
+// @Failure      404          {object}  models.ErrorResponse "Customer not found"
+// @Failure      500          {object}  models.ErrorResponse "Internal server error or failure in retrieving customer"
+// @Security     ApiKeyAuth
+// @Router       /customers/customerID/{customerID} [get]
 func (cc *CustomerController) GetCustomerByCustomerID(c *gin.Context) {
 	customerID := c.Param("customerID")
 	if cc.Log.RegisterLog(c, "Attempting to retrieve customer with customerID: "+customerID) != nil {
@@ -100,6 +139,20 @@ func (cc *CustomerController) GetCustomerByCustomerID(c *gin.Context) {
 	_ = cc.Log.RegisterLog(c, "Successfully retrieved customer with customerID: "+customerID)
 	c.JSON(http.StatusOK, customer)
 }
+
+// CreateCustomer godoc
+// @Summary      Create a new customer
+// @Description  Creates a new customer record in the system. Requires appropriate permission.
+// @Tags         customers
+// @Accept       json
+// @Produce      json
+// @Param        customer  body      dtos.CreateCustomerDTO  true  "New customer data"
+// @Success      201       {object}  models.Customer         "The created customer"
+// @Failure      400       {object}  models.ErrorResponse    "Invalid input data (JSON format or missing fields)"
+// @Failure      401       {object}  models.ErrorResponse    "Unauthorized or permission denied"
+// @Failure      500       {object}  models.ErrorResponse    "Internal server error or failure in creating customer"
+// @Security     ApiKeyAuth
+// @Router       /customers [post]
 func (cc *CustomerController) CreateCustomer(c *gin.Context) {
 	if cc.Log.RegisterLog(c, "Attempting to create new customer") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -141,6 +194,22 @@ func (cc *CustomerController) CreateCustomer(c *gin.Context) {
 	_ = cc.Log.RegisterLog(c, "Customer created successfully with CustomerID: "+createdCustomer.CustomerId)
 	c.JSON(http.StatusCreated, createdCustomer)
 }
+
+// UpdateCustomer godoc
+// @Summary      Update an existing customer
+// @Description  Updates an existing customer's data in the system. Requires appropriate permission.
+// @Tags         customers
+// @Accept       json
+// @Produce      json
+// @Param        id        path      int                    true  "Customer ID"
+// @Param        customer  body      dtos.UpdateCustomerDTO  true  "Updated customer data"
+// @Success      200       {object}  models.Customer         "The updated customer"
+// @Failure      400       {object}  models.ErrorResponse    "Invalid input data (ID format or JSON format)"
+// @Failure      401       {object}  models.ErrorResponse    "Unauthorized or permission denied"
+// @Failure      404       {object}  models.ErrorResponse    "Customer not found"
+// @Failure      500       {object}  models.ErrorResponse    "Internal server error or failure in updating customer"
+// @Security     ApiKeyAuth
+// @Router       /customers/{id} [put]
 func (cc *CustomerController) UpdateCustomer(c *gin.Context) {
 	if cc.Log.RegisterLog(c, "Attempting to update customer") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -191,6 +260,19 @@ func (cc *CustomerController) UpdateCustomer(c *gin.Context) {
 	c.JSON(http.StatusOK, customer)
 }
 
+// GetCustomerByEmail godoc
+// @Summary      Retrieve a customer by email
+// @Description  Retrieves a customer record from the system based on their email. Requires appropriate permission.
+// @Tags         customers
+// @Accept       json
+// @Produce      json
+// @Param        email     path      string               true  "Customer email"
+// @Success      200       {object}  models.Customer      "Customer data"
+// @Failure      401       {object}  models.ErrorResponse "Unauthorized or permission denied"
+// @Failure      404       {object}  models.ErrorResponse "Customer not found"
+// @Failure      500       {object}  models.ErrorResponse "Internal server error or failure in retrieving customer"
+// @Security     ApiKeyAuth
+// @Router       /customers/email/{email} [get]
 func (cc *CustomerController) GetCustomerByEmail(c *gin.Context) {
 	if cc.Log.RegisterLog(c, "Attempting to retrieve customer by email") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -215,6 +297,21 @@ func (cc *CustomerController) GetCustomerByEmail(c *gin.Context) {
 	_ = cc.Log.RegisterLog(c, "Customer retrieved successfully with email: "+email)
 	c.JSON(http.StatusOK, customer)
 }
+
+// SearchCustomersByID godoc
+// @Summary      Search customers by ID
+// @Description  Searches for customers based on a query ID. Requires appropriate permission.
+// @Tags         customers
+// @Accept       json
+// @Produce      json
+// @Param        id   query     string                 true  "Customer ID query"
+// @Success      200  {array}   dtos.GetCustomerDTO     "List of customers matching the search"
+// @Failure      400  {object}  models.ErrorResponse    "Invalid query or request format"
+// @Failure      401  {object}  models.ErrorResponse    "Unauthorized or permission denied"
+// @Failure      404  {object}  models.ErrorResponse    "No customers found"
+// @Failure      500  {object}  models.ErrorResponse    "Internal server error or failure in retrieving customers"
+// @Security     ApiKeyAuth
+// @Router       /customers/searchByID [get]
 func (cc *CustomerController) SearchCustomersByID(c *gin.Context) {
 	if cc.Log.RegisterLog(c, "Attempting to search customers by ID") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -262,6 +359,20 @@ func (cc *CustomerController) SearchCustomersByID(c *gin.Context) {
 	c.JSON(http.StatusOK, customersDTO)
 }
 
+// SearchCustomersByName godoc
+// @Summary      Search customers by name
+// @Description  Searches for customers based on a name query. Requires appropriate permission.
+// @Tags         customers
+// @Accept       json
+// @Produce      json
+// @Param        name  query     string                 true  "Customer name query"
+// @Success      200   {array}   dtos.GetCustomerDTO     "List of customers matching the search"
+// @Failure      400   {object}  models.ErrorResponse    "Invalid query or request format"
+// @Failure      401   {object}  models.ErrorResponse    "Unauthorized or permission denied"
+// @Failure      404   {object}  models.ErrorResponse    "No customers found"
+// @Failure      500   {object}  models.ErrorResponse    "Internal server error or failure in retrieving customers"
+// @Security     ApiKeyAuth
+// @Router       /customers/searchByName [get]
 func (cc *CustomerController) SearchCustomersByName(c *gin.Context) {
 	if cc.Log.RegisterLog(c, "Attempting to search customers by name") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -309,6 +420,20 @@ func (cc *CustomerController) SearchCustomersByName(c *gin.Context) {
 	c.JSON(http.StatusOK, customersDTO)
 }
 
+// SearchCustomersByLastName godoc
+// @Summary      Search customers by last name
+// @Description  Searches for customers based on a last name query. Requires appropriate permission.
+// @Tags         customers
+// @Accept       json
+// @Produce      json
+// @Param        lastName  query     string                 true  "Customer last name query"
+// @Success      200       {array}   dtos.GetCustomerDTO     "List of customers matching the search"
+// @Failure      400       {object}  models.ErrorResponse    "Invalid query or request format"
+// @Failure      401       {object}  models.ErrorResponse    "Unauthorized or permission denied"
+// @Failure      404       {object}  models.ErrorResponse    "No customers found"
+// @Failure      500       {object}  models.ErrorResponse    "Internal server error or failure in retrieving customers"
+// @Security     ApiKeyAuth
+// @Router       /customers/searchByLastName [get]
 func (cc *CustomerController) SearchCustomersByLastName(c *gin.Context) {
 	if cc.Log.RegisterLog(c, "Attempting to search customers by last name") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})

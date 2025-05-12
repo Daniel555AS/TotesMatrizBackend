@@ -24,6 +24,20 @@ func NewCommentController(service *services.CommentService, auth *utilities.Auth
 	return &CommentController{Service: service, Auth: auth, Log: log}
 }
 
+// GetCommentByID godoc
+// @Summary      Get comment by ID
+// @Description  Retrieves a comment by its unique ID. Requires permission.
+// @Tags         comments
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "Comment ID"
+// @Success      200  {object}  dtos.GetCommentDTO       "The retrieved comment"
+// @Failure      400  {object}  models.ErrorResponse     "Invalid comment ID"
+// @Failure      401  {object}  models.ErrorResponse     "Unauthorized or permission denied"
+// @Failure      404  {object}  models.ErrorResponse     "Comment not found"
+// @Failure      500  {object}  models.ErrorResponse     "Error retrieving comment or registering log"
+// @Security     ApiKeyAuth
+// @Router       /comments/{id} [get]
 func (cc *CommentController) GetCommentByID(c *gin.Context) {
 	idParam := c.Param("id")
 
@@ -74,6 +88,17 @@ func (cc *CommentController) GetCommentByID(c *gin.Context) {
 	c.JSON(http.StatusOK, commentDTO)
 }
 
+// GetAllComments godoc
+// @Summary      Get all comments
+// @Description  Retrieves a list of all submitted comments. Requires permission.
+// @Tags         comments
+// @Accept       json
+// @Produce      json
+// @Success      200  {array}   dtos.GetCommentDTO       "List of all comments"
+// @Failure      401  {object}  models.ErrorResponse     "Unauthorized or permission denied"
+// @Failure      500  {object}  models.ErrorResponse     "Failed to fetch comments or register log"
+// @Security     ApiKeyAuth
+// @Router       /comments [get]
 func (cc *CommentController) GetAllComments(c *gin.Context) {
 	if err := cc.Log.RegisterLog(c, "Attempting to retrieve all comments"); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -112,6 +137,19 @@ func (cc *CommentController) GetAllComments(c *gin.Context) {
 	c.JSON(http.StatusOK, commentsDTO)
 }
 
+// SearchCommentsByEmail godoc
+// @Summary      Search comments by email
+// @Description  Retrieves all comments that match the provided email address. Requires permission.
+// @Tags         comments
+// @Accept       json
+// @Produce      json
+// @Param        email  query     string                  true  "Email address to search comments by"
+// @Success      200    {array}   dtos.GetCommentDTO      "List of matching comments"
+// @Failure      400    {object}  models.ErrorResponse    "Email parameter is required"
+// @Failure      401    {object}  models.ErrorResponse    "Unauthorized or permission denied"
+// @Failure      500    {object}  models.ErrorResponse    "Failed to search comments or register log"
+// @Security     ApiKeyAuth
+// @Router       /comments/searchByEmail [get]
 func (cc *CommentController) SearchCommentsByEmail(c *gin.Context) {
 	if err := cc.Log.RegisterLog(c, "Attempting to search comments by email"); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -157,6 +195,19 @@ func (cc *CommentController) SearchCommentsByEmail(c *gin.Context) {
 	c.JSON(http.StatusOK, commentsDTO)
 }
 
+// CreateComment godoc
+// @Summary      Create a comment
+// @Description  Creates a new comment. Requires permission.
+// @Tags         comments
+// @Accept       json
+// @Produce      json
+// @Param        comment  body      dtos.CreateCommentDTO  true  "Comment data to create"
+// @Success      201      {object}  dtos.GetCommentDTO     "Created comment"
+// @Failure      400      {object}  models.ErrorResponse   "Invalid request data"
+// @Failure      401      {object}  models.ErrorResponse   "Unauthorized or permission denied"
+// @Failure      500      {object}  models.ErrorResponse   "Failed to create comment or register log"
+// @Security     ApiKeyAuth
+// @Router       /comments [post]
 func (cc *CommentController) CreateComment(c *gin.Context) {
 	if err := cc.Log.RegisterLog(c, "Attempting to create a comment"); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -208,6 +259,21 @@ func (cc *CommentController) CreateComment(c *gin.Context) {
 	c.JSON(http.StatusCreated, commentDTO)
 }
 
+// UpdateComment godoc
+// @Summary      Update a comment
+// @Description  Updates an existing comment by ID. Requires permission.
+// @Tags         comments
+// @Accept       json
+// @Produce      json
+// @Param        id       path      int                  true  "Comment ID"
+// @Param        comment  body      dtos.UpdateCommentDTO  true  "Updated comment data"
+// @Success      200      {object}  dtos.GetCommentDTO     "Updated comment"
+// @Failure      400      {object}  models.ErrorResponse   "Invalid ID or request data"
+// @Failure      401      {object}  models.ErrorResponse   "Unauthorized or permission denied"
+// @Failure      404      {object}  models.ErrorResponse   "Comment not found"
+// @Failure      500      {object}  models.ErrorResponse   "Internal server error or failed update"
+// @Security     ApiKeyAuth
+// @Router       /comments/{id} [put]
 func (cc *CommentController) UpdateComment(c *gin.Context) {
 	permissionId := config.PERMISSION_UPDATE_COMMENT
 
@@ -273,6 +339,20 @@ func (cc *CommentController) UpdateComment(c *gin.Context) {
 	c.JSON(http.StatusOK, updatedCommentDTO)
 }
 
+// SearchCommentsByID godoc
+// @Summary      Search comments by ID
+// @Description  Searches for comments using a given ID. Requires appropriate permission.
+// @Tags         comments
+// @Accept       json
+// @Produce      json
+// @Param        id       query     string               true  "ID to search for comments"
+// @Success      200      {array}   dtos.GetCommentDTO   "List of comments matching the ID"
+// @Failure      400      {object}  models.ErrorResponse "Invalid request parameters"
+// @Failure      401      {object}  models.ErrorResponse "Unauthorized or permission denied"
+// @Failure      404      {object}  models.ErrorResponse "No comments found for the given ID"
+// @Failure      500      {object}  models.ErrorResponse "Internal server error or failure in processing"
+// @Security     ApiKeyAuth
+// @Router       /comments/searchByID [get]
 func (cc *CommentController) SearchCommentsByID(c *gin.Context) {
 	query := c.Query("id")
 
@@ -314,6 +394,20 @@ func (cc *CommentController) SearchCommentsByID(c *gin.Context) {
 	c.JSON(http.StatusOK, commentsDTO)
 }
 
+// SearchCommentsByName godoc
+// @Summary      Search comments by name
+// @Description  Searches for comments using a given name. Requires appropriate permission.
+// @Tags         comments
+// @Accept       json
+// @Produce      json
+// @Param        name     query     string               true  "Name to search for comments"
+// @Success      200      {array}   dtos.GetCommentDTO   "List of comments matching the name"
+// @Failure      400      {object}  models.ErrorResponse "Invalid request parameters"
+// @Failure      401      {object}  models.ErrorResponse "Unauthorized or permission denied"
+// @Failure      404      {object}  models.ErrorResponse "No comments found for the given name"
+// @Failure      500      {object}  models.ErrorResponse "Internal server error or failure in processing"
+// @Security     ApiKeyAuth
+// @Router       /comments/searchByName [get]
 func (cc *CommentController) SearchCommentsByName(c *gin.Context) {
 	query := c.Query("name")
 

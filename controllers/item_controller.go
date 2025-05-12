@@ -24,6 +24,21 @@ type ItemController struct {
 func NewItemController(service *services.ItemService, auth *utilities.AuthorizationUtil, log *utilities.LogUtil) *ItemController {
 	return &ItemController{Service: service, Auth: auth, Log: log}
 }
+
+// CheckItemStock godoc
+// @Summary      Check item stock availability
+// @Description  Check if the specified quantity of an item is available in stock.
+// @Tags         items
+// @Accept       json
+// @Produce      json
+// @Param        id       path     string  true  "Item ID"
+// @Param        quantity query    int     true  "Quantity to check"
+// @Success      200 {boolean} true "Indicates whether the stock is sufficient or not"
+// @Failure      400 {object} models.ErrorResponse "Invalid quantity"
+// @Failure      403 {object} models.ErrorResponse "Access denied"
+// @Failure      500 {object} models.ErrorResponse "Error checking stock"
+// @Security     ApiKeyAuth
+// @Router       /items/{id}/stock [get]
 func (ic *ItemController) CheckItemStock(c *gin.Context) {
 	idParam := c.Param("id")
 	quantityParam := c.Query("quantity")
@@ -57,6 +72,20 @@ func (ic *ItemController) CheckItemStock(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"hasEnoughStock": hasStock})
 }
+
+// GetItemByID godoc
+// @Summary      Get item by ID
+// @Description  Retrieve an item by its unique ID from the inventory.
+// @Tags         items
+// @Accept       json
+// @Produce      json
+// @Param        id   path     string  true  "Item ID"
+// @Success      200  {object} dtos.GetItemDTO "Item found"
+// @Failure      400  {object} models.ErrorResponse "Invalid item ID format"
+// @Failure      404  {object} models.ErrorResponse "Item not found"
+// @Failure      500  {object} models.ErrorResponse "Error fetching item"
+// @Security     ApiKeyAuth
+// @Router       /items/{id} [get]
 func (ic *ItemController) GetItemByID(c *gin.Context) {
 	id := c.Param("id")
 
@@ -92,6 +121,17 @@ func (ic *ItemController) GetItemByID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, itemDTO)
 }
+
+// GetAllItems godoc
+// @Summary      Get all items
+// @Description  Retrieve a list of all items available in the inventory.
+// @Tags         items
+// @Accept       json
+// @Produce      json
+// @Success      200  {array}  dtos.GetItemDTO "List of items"
+// @Failure      500  {object} models.ErrorResponse "Error retrieving items"
+// @Security     ApiKeyAuth
+// @Router       /items [get]
 func (ic *ItemController) GetAllItems(c *gin.Context) {
 	if ic.Log.RegisterLog(c, "Fetching all items") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -131,6 +171,20 @@ func (ic *ItemController) GetAllItems(c *gin.Context) {
 
 	c.JSON(http.StatusOK, itemsDTO)
 }
+
+// SearchItemsByID godoc
+// @Summary      Search items by ID
+// @Description  Search for items in the inventory by their ID using a query parameter.
+// @Tags         items
+// @Accept       json
+// @Produce      json
+// @Param        id  query     string  true  "Item ID to search for"
+// @Success      200  {array}  dtos.GetItemDTO "List of items matching the search criteria"
+// @Failure      400  {object} models.ErrorResponse "Missing or invalid search query"
+// @Failure      404  {object} models.ErrorResponse "No items found"
+// @Failure      500  {object} models.ErrorResponse "Error retrieving items"
+// @Security     ApiKeyAuth
+// @Router       /items/searchById [get]
 func (ic *ItemController) SearchItemsByID(c *gin.Context) {
 	if ic.Log.RegisterLog(c, "Searching items by ID") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -190,6 +244,19 @@ func (ic *ItemController) SearchItemsByID(c *gin.Context) {
 	c.JSON(http.StatusOK, itemsDTO)
 }
 
+// SearchItemsByName godoc
+// @Summary      Search items by name
+// @Description  Search for items in the inventory by their name using a query parameter.
+// @Tags         items
+// @Accept       json
+// @Produce      json
+// @Param        name  query     string  true  "Item name to search for"
+// @Success      200   {array}   dtos.GetItemDTO "List of items matching the search criteria"
+// @Failure      400   {object}  models.ErrorResponse "Missing or invalid search query"
+// @Failure      404   {object}  models.ErrorResponse "No items found"
+// @Failure      500   {object}  models.ErrorResponse "Error retrieving items"
+// @Security     ApiKeyAuth
+// @Router       /items/searchByName [get]
 func (ic *ItemController) SearchItemsByName(c *gin.Context) {
 	if ic.Log.RegisterLog(c, "Searching items by name") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -249,6 +316,20 @@ func (ic *ItemController) SearchItemsByName(c *gin.Context) {
 	c.JSON(http.StatusOK, itemsDTO)
 }
 
+// UpdateItemState godoc
+// @Summary      Update the state of an item
+// @Description  Updates the state (active/inactive) of an item by its ID.
+// @Tags         items
+// @Accept       json
+// @Produce      json
+// @Param        id        path     string  true  "ID of the item to update"
+// @Param        item_state  body     bool    true  "New state for the item (true for active, false for inactive)"
+// @Success      200      {object}  dtos.GetItemDTO "Updated item information"
+// @Failure      400      {object}  models.ErrorResponse "Invalid request body"
+// @Failure      404      {object}  models.ErrorResponse "Item not found"
+// @Failure      500      {object}  models.ErrorResponse "Error updating item state"
+// @Security     ApiKeyAuth
+// @Router       /items/{id}/state [patch]
 func (ic *ItemController) UpdateItemState(c *gin.Context) {
 	if ic.Log.RegisterLog(c, "Updating item state") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -303,6 +384,20 @@ func (ic *ItemController) UpdateItemState(c *gin.Context) {
 	c.JSON(http.StatusOK, itemDTO)
 }
 
+// UpdateItem godoc
+// @Summary      Update an item
+// @Description  Updates the information of an existing item by its ID.
+// @Tags         items
+// @Accept       json
+// @Produce      json
+// @Param        id    path      string              true  "ID of the item to update"
+// @Param        item  body      dtos.UpdateItemDTO  true  "Updated item data"
+// @Success      200   {object}  dtos.GetItemDTO      "Item updated successfully"
+// @Failure      400   {object}  models.ErrorResponse "Invalid JSON format"
+// @Failure      404   {object}  models.ErrorResponse "Item not found"
+// @Failure      500   {object}  models.ErrorResponse "Error updating item"
+// @Security     ApiKeyAuth
+// @Router       /items/{id} [put]
 func (ic *ItemController) UpdateItem(c *gin.Context) {
 	if ic.Log.RegisterLog(c, "Updating item") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})
@@ -376,6 +471,19 @@ func (ic *ItemController) UpdateItem(c *gin.Context) {
 
 	c.JSON(http.StatusOK, dtoGet)
 }
+
+// CreateItem godoc
+// @Summary      Create a new item
+// @Description  Creates a new item with the provided data.
+// @Tags         items
+// @Accept       json
+// @Produce      json
+// @Param        item  body      dtos.UpdateItemDTO  true  "Item to create"
+// @Success      201   {object}  dtos.GetItemDTO      "Item created successfully"
+// @Failure      400   {object}  models.ErrorResponse "Invalid JSON format"
+// @Failure      500   {object}  models.ErrorResponse "Error creating item"
+// @Security     ApiKeyAuth
+// @Router       /items [post]
 func (ic *ItemController) CreateItem(c *gin.Context) {
 	if ic.Log.RegisterLog(c, "Creating new item") != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error registering log"})

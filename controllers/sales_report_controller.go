@@ -22,6 +22,19 @@ func NewSalesReportController(service *services.SalesReportService, auth *utilit
 	return &SalesReportController{Service: service, Auth: auth, Log: log}
 }
 
+// GetInvoicesBetweenDates godoc
+// @Summary      Fetch invoices between specified dates
+// @Description  Retrieve invoices that were generated between the given start and end dates.
+// @Tags         sales-report
+// @Produce      json
+// @Param        startDate  query  string  true  "Start Date (RFC3339 format)"
+// @Param        endDate    query  string  true  "End Date (RFC3339 format)"
+// @Success      200  {array}  dtos.SalesReportInvoiceDTO  "List of invoices between the given dates"
+// @Failure      400  {object}  models.ErrorResponse  "Invalid date format"
+// @Failure      403  {object}  models.ErrorResponse  "Permission denied"
+// @Failure      500  {object}  models.ErrorResponse  "Error fetching invoices"
+// @Security     ApiKeyAuth
+// @Router       /sales-report/invoices [get]
 func (src *SalesReportController) GetInvoicesBetweenDates(c *gin.Context) {
 	startDateStr := c.Query("startDate")
 	endDateStr := c.Query("endDate")

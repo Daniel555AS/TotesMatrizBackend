@@ -21,6 +21,20 @@ func NewUserTypeController(service *services.UserTypeService, auth *utilities.Au
 	return &UserTypeController{Service: service, Auth: auth, Log: log}
 }
 
+// GetUserTypeByID godoc
+// @Summary      Get user type by ID
+// @Description  Retrieves a user type based on the provided user type ID.
+// @Tags         user_types
+// @Accept       json
+// @Produce      json
+// @Param        id      path     int     true  "User Type ID"
+// @Success      200     {object}  dtos.UserTypeDTO  "User type information"
+// @Failure      400     {object}  models.ErrorResponse  "Invalid user type ID format"
+// @Failure      403     {object}  models.ErrorResponse  "Permission denied"
+// @Failure      404     {object}  models.ErrorResponse  "User type not found"
+// @Failure      500     {object}  models.ErrorResponse  "Internal server error"
+// @Security     ApiKeyAuth
+// @Router       /user-types/{id} [get]
 func (utc *UserTypeController) GetUserTypeByID(c *gin.Context) {
 	permissionId := config.PERMISSION_GET_USER_TYPE_BY_ID
 
@@ -71,6 +85,17 @@ func (utc *UserTypeController) GetUserTypeByID(c *gin.Context) {
 	c.JSON(http.StatusOK, userTypeDTO)
 }
 
+// GetAllUserTypes godoc
+// @Summary      Get all user types
+// @Description  Retrieves a list of all user types along with their associated roles.
+// @Tags         user_types
+// @Accept       json
+// @Produce      json
+// @Success      200     {array}   dtos.UserTypeDTO  "List of user types"
+// @Failure      403     {object}  models.ErrorResponse  "Permission denied"
+// @Failure      500     {object}  models.ErrorResponse  "Error retrieving user types"
+// @Security     ApiKeyAuth
+// @Router       /user-types [get]
 func (utc *UserTypeController) GetAllUserTypes(c *gin.Context) {
 	permissionId := config.PERMISSION_GET_ALL_USER_TYPES
 
@@ -117,6 +142,19 @@ func (utc *UserTypeController) GetAllUserTypes(c *gin.Context) {
 	c.JSON(http.StatusOK, userTypesDTO)
 }
 
+// ExistsUserType godoc
+// @Summary      Check if a user type exists
+// @Description  Checks if a user type exists based on the provided user type ID.
+// @Tags         user_types
+// @Accept       json
+// @Produce      json
+// @Param        id      path     string  true  "User Type ID"
+// @Success      200     {object}  models.MessageResponse "Existence status of the user type"
+// @Failure      400     {object}  models.ErrorResponse  "Invalid user type ID"
+// @Failure      403     {object}  models.ErrorResponse  "Permission denied"
+// @Failure      500     {object}  models.ErrorResponse  "Error checking user type existence"
+// @Security     ApiKeyAuth
+// @Router       /user-types/{id}/exists [get]
 func (utc *UserTypeController) ExistsUserType(c *gin.Context) {
 	permissionId := config.PERMISSION_EXIST_USER_TYPE
 
@@ -149,6 +187,19 @@ func (utc *UserTypeController) ExistsUserType(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"exists": exists})
 }
 
+// SearchUserTypesByID godoc
+// @Summary      Search user types by ID
+// @Description  Searches for user types based on the provided user type ID query.
+// @Tags         user_types
+// @Accept       json
+// @Produce      json
+// @Param        id      query    string  true  "User Type ID Query"
+// @Success      200     {array}   dtos.UserTypeDTO  "List of user types matching the ID query"
+// @Failure      400     {object}  models.ErrorResponse  "Invalid query parameter"
+// @Failure      403     {object}  models.ErrorResponse  "Permission denied"
+// @Failure      500     {object}  models.ErrorResponse  "Error searching user types"
+// @Security     ApiKeyAuth
+// @Router       /user-types/searchByID [get]
 func (utc *UserTypeController) SearchUserTypesByID(c *gin.Context) {
 	permissionId := config.PERMISSION_SEARCH_USER_TYPES_BY_ID
 
@@ -192,6 +243,19 @@ func (utc *UserTypeController) SearchUserTypesByID(c *gin.Context) {
 	c.JSON(http.StatusOK, userTypesDTO)
 }
 
+// SearchUserTypesByName godoc
+// @Summary      Search user types by name
+// @Description  Searches for user types based on the provided user type name query.
+// @Tags         user_types
+// @Accept       json
+// @Produce      json
+// @Param        name    query    string  true  "User Type Name Query"
+// @Success      200     {array}   dtos.UserTypeDTO  "List of user types matching the name query"
+// @Failure      400     {object}  models.ErrorResponse  "Invalid query parameter"
+// @Failure      403     {object}  models.ErrorResponse  "Permission denied"
+// @Failure      500     {object}  models.ErrorResponse  "Error searching user types"
+// @Security     ApiKeyAuth
+// @Router       /user-types/searchByName [get]
 func (utc *UserTypeController) SearchUserTypesByName(c *gin.Context) {
 	permissionId := config.PERMISSION_SEARCH_USER_TYPES_BY_NAME
 

@@ -24,6 +24,19 @@ func NewEmployeeController(service *services.EmployeeService, auth *utilities.Au
 	return &EmployeeController{Service: service, Auth: auth, Log: log}
 }
 
+// GetEmployeeByID godoc
+// @Summary      Get employee by ID
+// @Description  Retrieves a specific employee by their unique ID from the system. Requires the appropriate permissions.
+// @Tags         employees
+// @Accept       json
+// @Produce      json
+// @Param        id path string true "Employee ID"
+// @Success      200 {object} dtos.GetEmployeeDTO "Successfully retrieved employee details"
+// @Failure      400 {object} models.ErrorResponse "Invalid employee ID"
+// @Failure      403 {object} models.ErrorResponse "Permission denied"
+// @Failure      404 {object} models.ErrorResponse "Employee not found"
+// @Security     ApiKeyAuth
+// @Router       /employees/{id} [get]
 func (ec *EmployeeController) GetEmployeeByID(c *gin.Context) {
 	permissionId := config.PERMISSION_GET_EMPLOYEE_BY_ID
 
@@ -62,6 +75,17 @@ func (ec *EmployeeController) GetEmployeeByID(c *gin.Context) {
 	c.JSON(http.StatusOK, employeeDTO)
 }
 
+// GetAllEmployees godoc
+// @Summary      Get all employees
+// @Description  Retrieves a list of all employees in the system. Requires the appropriate permissions.
+// @Tags         employees
+// @Accept       json
+// @Produce      json
+// @Success      200 {array} dtos.GetEmployeeDTO "Successfully retrieved list of employees"
+// @Failure      403 {object} models.ErrorResponse "Permission denied"
+// @Failure      500 {object} models.ErrorResponse "Error retrieving employees"
+// @Security     ApiKeyAuth
+// @Router       /employees [get]
 func (ec *EmployeeController) GetAllEmployees(c *gin.Context) {
 	permissionId := config.PERMISSION_GET_ALL_EMPLOYEES
 
@@ -102,6 +126,19 @@ func (ec *EmployeeController) GetAllEmployees(c *gin.Context) {
 	c.JSON(http.StatusOK, employeesDTO)
 }
 
+// SearchEmployeesByID godoc
+// @Summary      Search employees by ID
+// @Description  Searches for employees by a given ID. Returns a list of employees that match the ID.
+// @Tags         employees
+// @Accept       json
+// @Produce      json
+// @Param        id query string true "Employee ID to search for"
+// @Success      200 {array} dtos.GetEmployeeDTO "Successfully found employees matching ID"
+// @Failure      403 {object} models.ErrorResponse "Permission denied"
+// @Failure      404 {object} models.ErrorResponse "No employees found"
+// @Failure      500 {object} models.ErrorResponse "Error retrieving employees"
+// @Security     ApiKeyAuth
+// @Router       /employees/searchByID [get]
 func (ec *EmployeeController) SearchEmployeesByID(c *gin.Context) {
 	query := c.Query("id")
 	permissionId := config.PERMISSION_SEARCH_EMPLOYEES_BY_ID
@@ -146,6 +183,20 @@ func (ec *EmployeeController) SearchEmployeesByID(c *gin.Context) {
 	c.JSON(http.StatusOK, employeesDTO)
 }
 
+// SearchEmployeesByName godoc
+// @Summary      Search employees by name
+// @Description  Searches for employees by their name. Returns a list of employees that match the name.
+// @Tags         employees
+// @Accept       json
+// @Produce      json
+// @Param        names query string true "Employee name to search for"
+// @Success      200 {array} dtos.GetEmployeeDTO "Successfully found employees matching name"
+// @Failure      400 {object} models.ErrorResponse "Search query is required"
+// @Failure      403 {object} models.ErrorResponse "Permission denied"
+// @Failure      404 {object} models.ErrorResponse "No employees found"
+// @Failure      500 {object} models.ErrorResponse "Error retrieving employees"
+// @Security     ApiKeyAuth
+// @Router       /employees/searchByName [get]
 func (ec *EmployeeController) SearchEmployeesByName(c *gin.Context) {
 	permissionId := config.PERMISSION_SEARCH_EMPLOYEES_BY_NAME
 
@@ -199,6 +250,20 @@ func (ec *EmployeeController) SearchEmployeesByName(c *gin.Context) {
 	c.JSON(http.StatusOK, employeesDTO)
 }
 
+// CreateEmployee godoc
+// @Summary      Create a new employee
+// @Description  Creates a new employee. The request body must contain the employee details.
+// @Tags         employees
+// @Accept       json
+// @Produce      json
+// @Param        employee body dtos.CreateEmployeeDTO true "Employee information"
+// @Success      201 {object} dtos.GetEmployeeDTO "Successfully created employee"
+// @Failure      400 {object} models.ErrorResponse "Invalid JSON format, or missing fields"
+// @Failure      403 {object} models.ErrorResponse "Permission denied"
+// @Failure      409 {object} models.ErrorResponse "Employee with this Personal ID already exists"
+// @Failure      500 {object} models.ErrorResponse "Error creating employee"
+// @Security     ApiKeyAuth
+// @Router       /employees [post]
 func (ec *EmployeeController) CreateEmployee(c *gin.Context) {
 	permissionId := config.PERMISSION_CREATE_EMPLOYEE
 
@@ -265,6 +330,21 @@ func (ec *EmployeeController) CreateEmployee(c *gin.Context) {
 	c.JSON(http.StatusCreated, employeeDTO)
 }
 
+// UpdateEmployee godoc
+// @Summary      Update an existing employee
+// @Description  Updates an employee's details by ID. The request body must contain the updated employee information.
+// @Tags         employees
+// @Accept       json
+// @Produce      json
+// @Param        id path string true "Employee ID"
+// @Param        employee body dtos.UpdateEmployeeDTO true "Updated employee information"
+// @Success      200 {object} dtos.GetEmployeeDTO "Successfully updated employee"
+// @Failure      400 {object} models.ErrorResponse "Invalid JSON format"
+// @Failure      403 {object} models.ErrorResponse "Permission denied"
+// @Failure      404 {object} models.ErrorResponse "Employee not found"
+// @Failure      500 {object} models.ErrorResponse "Error updating employee"
+// @Security     ApiKeyAuth
+// @Router       /employees/{id} [put]
 func (ec *EmployeeController) UpdateEmployee(c *gin.Context) {
 	permissionId := config.PERMISSION_UPDATE_EMPLOYEE
 
