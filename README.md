@@ -86,17 +86,20 @@ All modules are exposed through a **RESTful API built with Gin**.
 
 This project includes visual diagrams and spreadsheets to better understand the system’s architecture and functionality.  
 
-## 📊 Database Schema  
-![Database Schema](bd.png)  
-
-## 🔄 Purchase Order State Machine  
-![Purchase Order State Machine](MachineState.png)  
 
 ## 🏗️ Class Diagram  
 ![Class Diagram](ClassDiagram1.png)  
 
-## 📑 Additional Documentation  
-You can also check the complementary spreadsheet here:  
-[Google Spreadsheet Documentation](https://docs.google.com/spreadsheets/d/11m102lqUJTmU0siZoBioVnoCZNL1aB6UESGzQxuqE8w/edit?usp=sharing)
+## 🔄 Purchase Order State Machine  
+![Purchase Order State Machine](MachineState.png)  
+
+## 📊 Database Schema  
+![Database Schema](bd.png)  
+
+
+## 👥 Roles & Permissions  
+The system implements a **granular user permission model** with `Permissions`, `Roles`, and `User Types`.  
+A detailed definition of these roles and permissions can be found in the following spreadsheet:  
+[Google Spreadsheet – Roles & Permissions](https://docs.google.com/spreadsheets/d/11m102lqUJTmU0siZoBioVnoCZNL1aB6UESGzQxuqE8w/edit?usp=sharing)
 
 
