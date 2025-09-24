@@ -90,13 +90,13 @@ This project includes visual diagrams and spreadsheets to better understand the 
 
 
 ## 🏗️ Class Diagram  
-![Class Diagram](ClassDiagram1.png)  
+![Class Diagram](docs/ClassDiagram1.png)  
 
 ## 🔄 Purchase Order State Machine  
-![Purchase Order State Machine](MachineState.png)  
+![Purchase Order State Machine](docs/MachineState.png)  
 
 ## 📊 Database Schema  
-![Database Schema](bd.png)  
+![Database Schema](docs/bd.png)  
 
 
 ## 👥 Roles & Permissions  
