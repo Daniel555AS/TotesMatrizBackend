@@ -82,6 +82,8 @@ All modules are exposed through a **RESTful API built with Gin**.
 - Endpoints for **User Administration, Clients, Appointments, Inventory, Purchases, Permissions, and others**.  
 - DTOs ensure structured and validated request/response handling.  
 
+---
+
 # 📘 Documentation  
 
 This project includes visual diagrams and spreadsheets to better understand the system’s architecture and functionality.  
